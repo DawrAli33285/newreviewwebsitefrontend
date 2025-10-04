@@ -1,17 +1,103 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
+import Layout from './components/layout';
+import AdminLayout from './components/adminLayout';
+import App from './App';
+import Pricing from './Pricing';
+import About from './About';
+import Contact from './Contact';
+import Login from './Login';
+import GetStarted from './signup';
+import Overview  from './Overview';
+import BusinessInfo from './pages/admin/BusinessInfo';
+import Analytics from './pages/admin/Analytics';
+import Reviews from './pages/admin/Reviews';
+import BusinessCard from './pages/admin/BusinessCard';
+import SettingsPage from './pages/admin/SettingsPage';
+import ReviewPage from './ReviewPage';
+import ComplaintPage from './pages/admin/Complaint';
+import ScrollUp from './scrollup';
+import {loadStripe} from '@stripe/stripe-js';
+import {
+  PaymentElement,
+  Elements,
+  useStripe,
+  useElements,
+} from '@stripe/react-stripe-js';
+import Subscription from './subscription';
+import Middleware from './Middleware';
+import ResetPassword from './Resetpassword';
+
+
+const stripePromise = loadStripe('pk_test_51OwuO4LcfLzcwwOYdssgGfUSfOgWT1LwO6ewi3CEPewY7WEL9ATqH6WJm3oAcLDA3IgUvVYLVEBMIEu0d8fUwhlw009JwzEYmV');
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: (
+      <ScrollUp>
+        <Layout />
+      </ScrollUp>
+    ),
+    children: [
+      { index: true, element: <App /> },
+      { path: "pricing", element: <Pricing /> },
+      { path: "about", element: <About /> },
+      { path: "contact", element: <Contact /> },
+      { path: "login", element: <Login /> },
+      { path: "get-started", element: <GetStarted /> },
+      {path:'subscription',element:<Subscription/>},
+      {path:'/forgot-password',element:<ResetPassword/>}
+    ]
+  },
+  {
+    path: "/admin",
+    element: (
+      <ScrollUp>
+        <Middleware>
+          <AdminLayout />
+        </Middleware>
+      </ScrollUp>
+    ),
+    children: [
+      { index: true, element: <Overview /> },
+      { path: "overview", element: <Overview /> },
+      { path: "business-info", element: <BusinessInfo /> },
+      { path: "analytics", element: <Analytics /> },
+      { path: "reviews", element: <Reviews /> },
+      { path: "business-card", element: <BusinessCard /> },
+      { path: "settings", element: <SettingsPage /> },
+    ],
+  },  
+  { 
+    path: "/restaurant/:restaurantName", 
+    element: (
+      <ScrollUp>
+        <ReviewPage />
+      </ScrollUp>
+    ) 
+  },
+  { 
+    path: "complaint", 
+    element: (
+      <ScrollUp>
+        <ComplaintPage />
+      </ScrollUp>
+    ) 
+  }
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <Elements stripe={stripePromise} >
+
+    <RouterProvider router={router} />
+    </Elements>
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
