@@ -220,14 +220,14 @@ if (loading) {
             <div className="text-sm text-gray-600 mb-1">Total Reviews</div>
             <div className="text-2xl font-bold text-gray-900 flex items-center">
               <span className="text-green-600 mr-2">💬</span>
-              {overviewData?.reviews[0]?.totalReviews}
+              {overviewData?.reviews[0]?.totalReviews?overviewData?.reviews[0]?.totalReviews:'0'}
             </div>
           </div>
           <div className="p-4 bg-gray-50 rounded-lg">
             <div className="text-sm text-gray-600 mb-1">Average Rating</div>
             <div className="text-2xl font-bold text-gray-900 flex items-center">
               <span className="text-yellow-500 mr-2">⭐</span>
-              {overviewData?.reviews[0]?.averageRating?.toFixed(1)} / 5.0
+              {overviewData?.reviews[0]?.averageRating?.toFixed(1)?overviewData?.reviews[0]?.averageRating?.toFixed(1):'0'} / 5.0
             </div>
           </div>
           <div className="p-4 bg-gray-50 rounded-lg">
@@ -235,7 +235,8 @@ if (loading) {
             <div className="text-2xl font-bold text-gray-900 flex items-center">
               <span className="text-blue-600 mr-2">📊</span>
           {overviewData?.thisMonthReviews[0]?.
-reviewsThisMonth?.toString()}/30
+reviewsThisMonth?.toString()?overviewData?.thisMonthReviews[0]?.
+reviewsThisMonth?.toString():'0'}/30
             </div>
           </div>
         </div>
