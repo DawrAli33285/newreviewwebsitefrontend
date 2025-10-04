@@ -71,7 +71,7 @@ if(e?.response?.data?.error){
       console.log(selectedReviews)
       if (window.confirm(`Are you sure you want to delete ${selectedReviews.length} review(s)?`)) {
       try{
- let response=await axios.delete(`${BASE_URL}/bulkdelete`,selectedReviews)
+ let response=await axios.post(`${BASE_URL}/bulkdelete`,selectedReviews)
         setReviews(reviews.filter(review => !selectedReviews.includes(review._id)));
         setSelectedReviews([]);
         toast.success(response.data.message,{containerId:"reviewTablePage"})
