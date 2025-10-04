@@ -249,7 +249,8 @@ reviewsThisMonth?.toString():'0'}/30
           <div className="flex items-center justify-between text-sm">
             <span className="text-gray-600">Reviews Used This Month</span>
             <span className="font-semibold text-gray-900">{overviewData?.thisMonthReviews[0]?.
-reviewsThisMonth?.toString()} / 30</span>
+reviewsThisMonth?.toString()?overviewData?.thisMonthReviews[0]?.
+reviewsThisMonth?.toString():'0'} / 30</span>
           </div>
           
           <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
@@ -261,7 +262,8 @@ reviewsThisMonth?.toString()} / 30</span>
           </div>
           
           <div className="text-right text-sm text-gray-500">{overviewData?.thisMonthReviews[0]?.
-reviewsThisMonth?.toString()}%</div>
+reviewsThisMonth?.toString()?overviewData?.thisMonthReviews[0]?.
+reviewsThisMonth?.toString():'0'}%</div>
         </div>
       </div>
 
@@ -270,8 +272,10 @@ reviewsThisMonth?.toString()}%</div>
         <p className="text-gray-600 mb-6">
           Get unlimited reviews, advanced analytics, and priority support with our Premium plan.
         </p>
-        <button className="w-full sm:w-auto px-8 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors shadow-lg">
-          Upgrade to Premium - $29/month
+        <button onClick={()=>{
+          navigate('/pricing')
+        }} className="w-full sm:w-auto px-8 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors shadow-lg">
+          Upgrade to Premium 
         </button>
       </div>
 
