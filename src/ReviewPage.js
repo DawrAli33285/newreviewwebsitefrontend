@@ -57,11 +57,6 @@ setFormData({
   description: '',
 })
 if(rating>=4){
-  let currentUser=JSON.parse(localStorage.getItem('user'))
-
- if(currentUser?._id?.toString()==businessData?.user?.toString()){
-  toast.error('You cant add reviews for yourself',{containerId:"reviewPage"});
- }else{
   if (rating >= 4 && businessData.businessAddress) {
     setRating(0)
    toast.success('Thank you for your review!',{containerId:"reviewPage"});
@@ -72,7 +67,6 @@ if(rating>=4){
 
    
   }
- }
 }else{
   console.log("BUSINESSDATA")
   console.log(businessData)
