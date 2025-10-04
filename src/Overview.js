@@ -55,7 +55,7 @@ const [reviewLink,setReviewLink]=useState("https://only-good-reviews.com/restaur
       }
     }
     
-    const seed = reviewLink.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const seed = reviewLink+'?source=qrcode'.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const random = (i, j) => {
       const x = Math.sin(seed + i * 12.9898 + j * 78.233) * 43758.5453;
       return x - Math.floor(x);
@@ -303,7 +303,7 @@ reviewsThisMonth?.toString()}%</div>
               </div>
 
               <p className="text-sm text-gray-600 mb-4">Scan to leave us a review!</p>
-              <p className="text-xs text-gray-500 mb-6 break-all">{reviewLink}</p>
+              <p className="text-xs text-gray-500 mb-6 break-all">{reviewLink+'?source=qrcode'}</p>
 
               <button 
                 onClick={downloadQRCode}
