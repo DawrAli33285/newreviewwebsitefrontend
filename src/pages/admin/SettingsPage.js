@@ -253,7 +253,7 @@ let response=await axios.delete(`${BASE_URL}/deleteUser/${user._id}`)
 toast.success("User deleted sucessfully",{containerId:"settingPage"})
 
 setTimeout(()=>{
-navigate('/')
+window.location.href="/"
 },1500)
   }catch(e){
     if(e?.response?.data?.error){
