@@ -256,7 +256,8 @@ let response=await axios.delete(`${BASE_URL}/deleteUser/${user._id}`,{
   }
 })
 toast.success("User deleted sucessfully",{containerId:"settingPage"})
-
+localStorage.removeItem('token')
+localStorage.removeItem('user')
 setTimeout(()=>{
 window.location.href="/"
 },1500)
