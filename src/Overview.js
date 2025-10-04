@@ -303,7 +303,7 @@ reviewsThisMonth?.toString()}%</div>
               </div>
 
               <p className="text-sm text-gray-600 mb-4">Scan to leave us a review!</p>
-              <p className="text-xs text-gray-500 mb-6 break-all">{reviewLink+'?source=qrcode'}</p>
+              <p className="text-xs text-gray-500 mb-6 break-all">{reviewLink}</p>
 
               <button 
                 onClick={downloadQRCode}

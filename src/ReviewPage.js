@@ -43,6 +43,9 @@ const location=useLocation();
     }
     let search=new URLSearchParams(location.search)
     let source=search.get('source')
+    if(!source){
+source="qrcode"
+    }
     console.log('Review submitted:', { rating, ...formData });
     let data={
       ...formData,
