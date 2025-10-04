@@ -249,7 +249,12 @@ const navigate=useNavigate();
 
 const deleteUser=async()=>{
   try{
-let response=await axios.delete(`${BASE_URL}/deleteUser/${user._id}`)
+    let token=localStorage.getItem('token')
+let response=await axios.delete(`${BASE_URL}/deleteUser/${user._id}`,{
+  headers:{
+    Authorization:`Bearer ${token}`
+  }
+})
 toast.success("User deleted sucessfully",{containerId:"settingPage"})
 
 setTimeout(()=>{
