@@ -94,6 +94,7 @@ const navigate=useNavigate();
 
       toast.success('Password updated successfully',{containerId:"settingsPage"});
       setPasswords({ current: '', new: '', confirm: '' });
+      getUserData();
     } catch (e) {
       toast.error(e?.response?.data?.error || 'Failed to update password',{containerId:"settingsPage"});
     }
