@@ -36,8 +36,12 @@ const BusinessCard = () => {
   const [downloadFormat, setDownloadFormat] = useState('png');
   const [cardSize, setCardSize] = useState('standard');
 
+ 
   const generateQRCode = async (canvasRef) => {
-    if (!canvasRef || !canvasRef.current) return;
+    if (!canvasRef || !canvasRef.current) {
+      console.error('Canvas ref is not available');
+      return;
+    }
     
     // Load QRCode library if not already loaded
     if (!window.QRCode) {
@@ -52,6 +56,11 @@ const BusinessCard = () => {
     
     const canvas = canvasRef.current;
     const size = canvasRef === qrOnlyCanvasRef ? 300 : 150;
+    
+    // Initialize canvas dimensions FIRST
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
     
     // Create a temporary div to generate QR code
     const tempDiv = document.createElement('div');
@@ -70,26 +79,26 @@ const BusinessCard = () => {
       });
       
       // Wait for QR code to be generated
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 500));
       
       // Get the generated image
       const img = tempDiv.querySelector('img');
       if (img && img.complete) {
-        const ctx = canvas.getContext('2d');
-        canvas.width = size;
-        canvas.height = size;
+        ctx.clearRect(0, 0, size, size);
         ctx.drawImage(img, 0, 0, size, size);
+        console.log('QR Code drawn to canvas successfully');
       } else if (img) {
         await new Promise((resolve) => {
           img.onload = () => {
-            const ctx = canvas.getContext('2d');
-            canvas.width = size;
-            canvas.height = size;
+            ctx.clearRect(0, 0, size, size);
             ctx.drawImage(img, 0, 0, size, size);
+            console.log('QR Code drawn to canvas successfully (after load)');
             resolve();
           };
         });
       }
+      
+      console.log('QR Canvas final size:', canvas.width, 'x', canvas.height);
     } catch (error) {
       console.error('QR Code generation error:', error);
     } finally {
@@ -97,15 +106,25 @@ const BusinessCard = () => {
       document.body.removeChild(tempDiv);
     }
   };
-
+  
   const generateCardImage = async (format, side = cardSide) => {
     if (!cardRef.current) return null;
   
     try {
       // If generating back side, ensure QR code is ready first
       if (side === 'back') {
+        console.log('Generating QR code for back side...');
+        
+        // Ensure canvas ref exists, if not create temporary one
+        if (!qrCanvasRef.current) {
+          console.error('QR Canvas ref is null! Creating temporary canvas...');
+          const tempCanvas = document.createElement('canvas');
+          qrCanvasRef.current = tempCanvas;
+        }
+        
         await generateQRCode(qrCanvasRef);
-        await new Promise(resolve => setTimeout(resolve, 500)); // Changed from 300 to 500
+        await new Promise(resolve => setTimeout(resolve, 800));
+        console.log('QR Canvas ready:', qrCanvasRef.current?.width, 'x', qrCanvasRef.current?.height);
       }
   
       const canvas = document.createElement('canvas');
@@ -130,7 +149,6 @@ const BusinessCard = () => {
         let xOffset = 60;
         
         if (selectedFields.logo && businessData.photo) {
-          // Draw logo
           const img = new Image();
           img.crossOrigin = 'anonymous';
           await new Promise((resolve, reject) => {
@@ -146,7 +164,7 @@ const BusinessCard = () => {
               ctx.restore();
               resolve();
             };
-            img.onerror = () => resolve(); // Continue even if image fails
+            img.onerror = () => resolve();
             img.src = businessData.photo;
           });
           xOffset = 170;
@@ -189,26 +207,24 @@ const BusinessCard = () => {
         ctx.fillStyle = 'rgba(147, 51, 234, 0.8)';
         ctx.fillRect(40, 40, 460, 230);
         
-        // Draw QR code - with verification
-       // In generateCardImage function, around line 186
-// Replace the QR code drawing section with:
-if (qrCanvasRef.current && qrCanvasRef.current.width > 0) {
-  // Draw white background for QR code
-  ctx.fillStyle = '#FFFFFF';
-  ctx.fillRect(200, 70, 140, 140);
-  
-  // Draw the QR code
-  try {
-    ctx.drawImage(qrCanvasRef.current, 205, 75, 130, 130);
-    console.log('QR Code drawn successfully');
-  } catch (err) {
-    console.error('Error drawing QR code:', err);
-  }
-} else {
-  console.error('QR Canvas not ready - width:', qrCanvasRef.current?.width);
-}
+        // Draw white background for QR code
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(200, 70, 140, 140);
         
-        // Address section - centered and properly positioned
+        // Draw the QR code
+        if (qrCanvasRef.current && qrCanvasRef.current.width > 0) {
+          console.log('Drawing QR code to card image... Canvas size:', qrCanvasRef.current.width, 'x', qrCanvasRef.current.height);
+          try {
+            ctx.drawImage(qrCanvasRef.current, 205, 75, 130, 130);
+            console.log('QR code drawn successfully!');
+          } catch (err) {
+            console.error('Error drawing QR code:', err);
+          }
+        } else {
+          console.error('QR Canvas not ready - width:', qrCanvasRef.current?.width, 'height:', qrCanvasRef.current?.height);
+        }
+        
+        // Address section
         if (selectedFields.address) {
           ctx.fillStyle = '#FBC2EB';
           ctx.font = 'bold 14px Arial';
@@ -218,7 +234,6 @@ if (qrCanvasRef.current && qrCanvasRef.current.width > 0) {
           ctx.fillStyle = '#BFDBFE';
           ctx.font = '11px Arial';
           
-          // Wrap address text if too long
           const maxWidth = 400;
           const words = businessData.address.split(' ');
           let line = '';
@@ -239,13 +254,11 @@ if (qrCanvasRef.current && qrCanvasRef.current.width > 0) {
           ctx.fillText(line, 270, yPos);
         }
         
-        // Bottom text
         ctx.fillStyle = '#BFDBFE';
         ctx.font = '11px Arial';
         ctx.textAlign = 'center';
         ctx.fillText('Scan to leave us a review!', 270, 260);
         
-        // Reset text alignment
         ctx.textAlign = 'left';
       }
   
@@ -253,6 +266,73 @@ if (qrCanvasRef.current && qrCanvasRef.current.width > 0) {
     } catch (error) {
       console.error('Card generation error:', error);
       return null;
+    }
+  };
+  
+  const downloadCardsZIP = async () => {
+    try {
+      console.log('Starting ZIP download process...');
+      
+      if (!window.JSZip) {
+        console.log('Loading JSZip library...');
+        await new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+          script.onload = resolve;
+          script.onerror = reject;
+          document.head.appendChild(script);
+        });
+      }
+  
+      const zip = new window.JSZip();
+      
+      // Create a temporary canvas if ref doesn't exist
+      if (!qrCanvasRef.current) {
+        console.log('Creating temporary QR canvas...');
+        const tempCanvas = document.createElement('canvas');
+        document.body.appendChild(tempCanvas);
+        tempCanvas.style.display = 'none';
+        qrCanvasRef.current = tempCanvas;
+      }
+  
+      // Generate QR code
+      console.log('Generating QR code...');
+      await generateQRCode(qrCanvasRef);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log('QR code ready, canvas size:', qrCanvasRef.current?.width, 'x', qrCanvasRef.current?.height);
+  
+      // Generate front card
+      console.log('Generating front card...');
+      const frontDataUrl = await generateCardImage('png', 'front');
+      if (frontDataUrl) {
+        const frontBase64 = frontDataUrl.split(',')[1];
+        zip.file(`${businessData.businessName.replace(/\s+/g, '-')}-front.png`, frontBase64, { base64: true });
+        console.log('Front card added to ZIP');
+      }
+      
+      // Generate back card
+      console.log('Generating back card...');
+      const backDataUrl = await generateCardImage('png', 'back');
+      if (backDataUrl) {
+        const backBase64 = backDataUrl.split(',')[1];
+        zip.file(`${businessData.businessName.replace(/\s+/g, '-')}-back.png`, backBase64, { base64: true });
+        console.log('Back card added to ZIP');
+      }
+  
+      // Generate and download ZIP
+      console.log('Creating ZIP file...');
+      const zipBlob = await zip.generateAsync({ type: 'blob' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(zipBlob);
+      link.download = `${businessData.businessName.replace(/\s+/g, '-')}-business-cards.zip`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+  
+      console.log('ZIP download complete!');
+      alert('Business cards downloaded as ZIP file!');
+    } catch (error) {
+      console.error('ZIP download error:', error);
+      alert('Failed to create ZIP file. Please try again.');
     }
   };
 
@@ -274,52 +354,7 @@ if (qrCanvasRef.current && qrCanvasRef.current.width > 0) {
     link.click();
   };
 
-  const downloadCardsZIP = async () => {
-    try {
-      if (!window.JSZip) {
-        await new Promise((resolve, reject) => {
-          const script = document.createElement('script');
-          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
-          script.onload = resolve;
-          script.onerror = reject;
-          document.head.appendChild(script);
-        });
-      }
-  
-      const zip = new window.JSZip();
-  
-      // IMPORTANT: Generate QR code FIRST and wait for it to be ready
-      await generateQRCode(qrCanvasRef);
-      await new Promise(resolve => setTimeout(resolve, 500)); // Wait for QR code generation
-  
-      // Generate front card
-      const frontDataUrl = await generateCardImage('png', 'front');
-      if (frontDataUrl) {
-        const frontBase64 = frontDataUrl.split(',')[1];
-        zip.file(`${businessData.businessName.replace(/\s+/g, '-')}-front.png`, frontBase64, { base64: true });
-      }
-      
-      // Generate back card (QR code is already ready)
-      const backDataUrl = await generateCardImage('png', 'back');
-      if (backDataUrl) {
-        const backBase64 = backDataUrl.split(',')[1];
-        zip.file(`${businessData.businessName.replace(/\s+/g, '-')}-back.png`, backBase64, { base64: true });
-      }
-  
-      // Generate and download ZIP
-      const zipBlob = await zip.generateAsync({ type: 'blob' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(zipBlob);
-      link.download = `${businessData.businessName.replace(/\s+/g, '-')}-business-cards.zip`;
-      link.click();
-      URL.revokeObjectURL(link.href);
-  
-      alert('Business cards downloaded as ZIP file!');
-    } catch (error) {
-      console.error('ZIP download error:', error);
-      alert('Failed to create ZIP file. Please try again.');
-    }
-  };
+ 
   const downloadQROnly = () => {
     if (!qrOnlyCanvasRef.current) return;
     

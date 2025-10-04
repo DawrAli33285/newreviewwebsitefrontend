@@ -45,6 +45,7 @@ export default function Pricing() {
     try {
       setLoading(true);
       let response = await  axios.get(`${BASE_URL}/getPlans`)
+      console.log(response.data)
       setPlans(response.data.plans);
       setLoading(false);
     } catch (e) {
@@ -120,7 +121,7 @@ export default function Pricing() {
 
                   <div className="p-8">
                     <div className="pt-8 text-center">
-                      <h3 className="text-2xl font-bold mb-2 capitalize">{plan.planName}</h3>
+                      <h3 className="text-2xl font-bold mb-2 capitalize">{plan?.planName?plan?.planName:plan?.name}</h3>
                       <div className="mb-4">
                         <span className="text-4xl font-bold text-blue-600">${plan.price}</span>
                         <span className="text-gray-500 ml-2">/per month</span>
