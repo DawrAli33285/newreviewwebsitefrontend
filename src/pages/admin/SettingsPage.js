@@ -20,7 +20,8 @@ const SettingsPage = () => {
   const [passwords, setPasswords] = useState({
     current: '',
     new: '',
-    confirm: ''
+    confirm: '',
+    userName:''
   });
 
   const [showPasswords, setShowPasswords] = useState({
@@ -56,7 +57,8 @@ const navigate=useNavigate();
       setReview(response.data.reviews);
       setUser(response.data.user);
       setPasswords({
-        current:response.data.user.password
+        current:response.data.user.password,
+        userName:response.data.user.userName
       })
       setLoading(false)
       console.log(response.data);
