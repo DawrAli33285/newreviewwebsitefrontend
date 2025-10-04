@@ -4,6 +4,7 @@ import { BASE_URL, FRONTEND_URL } from './baseurl';
 import axios from 'axios'
 import { Copy, Check } from 'lucide-react';
 import {ToastContainer,toast} from 'react-toastify'
+import {useNavigate} from 'react-router-dom'
 
 export default function GetStarted() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -16,7 +17,7 @@ export default function GetStarted() {
     businessAddress: '',
   });
   const [errors, setErrors] = useState({});
-
+const navigate=useNavigate()
   const   handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -346,7 +347,9 @@ return false
     </div>
                 </div>
 
-                <button className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                <button onClick={()=>{
+                  navigate('/admin')
+                }} className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
                   Go to Dashboard
                 </button>
               </div>
