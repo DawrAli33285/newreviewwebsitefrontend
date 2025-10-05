@@ -355,18 +355,49 @@ const BusinessCard = () => {
   };
 
  
-  const downloadQROnly = () => {
+  const downloadQROnly = async () => {
     if (!qrOnlyCanvasRef.current) return;
     
-    generateQRCode(qrOnlyCanvasRef);
-    
-    setTimeout(() => {
+    try {
+      // Generate the QR code and wait for it to complete
+      await generateQRCode(qrOnlyCanvasRef);
+      
+      // Wait a bit longer to ensure the QR code is fully rendered
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Check if the canvas has content
+      const canvas = qrOnlyCanvasRef.current;
+      const ctx = canvas.getContext('2d');
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      
+      // Check if the canvas is not empty (all pixels are not white/transparent)
+      const hasContent = imageData.data.some((value, index) => {
+        // Check alpha channel (every 4th value)
+        if ((index + 1) % 4 === 0) return false;
+        // Check if any RGB value is not 255 (not pure white)
+        return value < 255;
+      });
+      
+      if (!hasContent) {
+        console.error('QR code canvas is empty, regenerating...');
+        await generateQRCode(qrOnlyCanvasRef);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+      
+      // Create download link
       const link = document.createElement('a');
       link.download = `${businessData.businessName.replace(/\s+/g, '-')}-QR-Code.png`;
-      link.href = qrOnlyCanvasRef.current.toDataURL('image/png');
+      link.href = canvas.toDataURL('image/png');
       link.click();
-    }, 100);
+      
+      console.log('QR code downloaded successfully');
+    } catch (error) {
+      console.error('Error downloading QR code:', error);
+      alert('Failed to download QR code. Please try again.');
+    }
   };
+
+  
 
   const toggleField = (field) => {
     setSelectedFields(prev => ({
