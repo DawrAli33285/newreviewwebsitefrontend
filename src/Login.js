@@ -158,7 +158,7 @@ console.log(response.data)
                         <div className="text-center">
                             <p className="text-gray-600 mb-4">Don't have an account?</p>
                             <Link 
-                                to="/signup" 
+                                to="/get-started" 
                                 className="text-blue-600 hover:text-blue-700 font-medium text-base"
                             >
                                 Create new account
