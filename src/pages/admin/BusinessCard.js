@@ -137,15 +137,27 @@ const BusinessCard = () => {
       ctx.scale(scale, scale);
       
       const gradient = ctx.createLinearGradient(0, 0, 540, 310);
-      gradient.addColorStop(0, '#9333ea');
-      gradient.addColorStop(1, '#2563eb');
+      gradient.addColorStop(0, '#1a1a1a');
+      gradient.addColorStop(1, '#0a0a0a');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, 540, 310);
+
+      
   
       if (side === 'front') {
-        ctx.fillStyle = 'rgba(147, 51, 234, 0.8)';
+        ctx.fillStyle = '#000000';
         ctx.fillRect(40, 40, 460, 230);
         
+        
+        ctx.strokeStyle = '#d4af37';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(40, 40, 460, 230);
+        
+       
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+        ctx.fillRect(50, 50, 440, 210);
+
+
         let xOffset = 60;
         
         if (selectedFields.logo && businessData.photo) {
@@ -180,10 +192,11 @@ const BusinessCard = () => {
         
         ctx.fillStyle = '#FFFFFF';
         if (selectedFields.businessName) {
+          ctx.fillStyle = '#d4af37'; // Gold color
           ctx.font = 'bold 32px Arial';
           ctx.fillText(businessData.businessName, xOffset, 120);
         }
-        
+
         ctx.fillStyle = '#BFDBFE';
         ctx.font = '14px Arial';
       
@@ -195,21 +208,40 @@ const BusinessCard = () => {
           ctx.fillText(`📞 ${businessData.phoneNumber}`, xOffset, yOffset);
           yOffset += 20;
         }
-        if (selectedFields.email) {
-          ctx.fillText(`✉️ ${businessData.email}`, xOffset, yOffset);
-          yOffset += 20;
-        }
-        if (selectedFields.website) {
-          ctx.fillText(`🌐 ${businessData.website}`, xOffset, yOffset);
-        }
+
+      if (selectedFields.email) {
+  ctx.fillText(`✉️ ${businessData.email}`, xOffset, yOffset);
+  yOffset += 20;
+}
+if (selectedFields.website) {
+  ctx.fillText(`🌐 ${businessData.website}`, xOffset, yOffset);
+}
+
       } else {
         // Back side
-        ctx.fillStyle = 'rgba(147, 51, 234, 0.8)';
-        ctx.fillRect(40, 40, 460, 230);
-        
-        // Draw white background for QR code
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillRect(200, 70, 140, 140);
+        // Back side - sleek black design
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(40, 40, 460, 230);
+  
+  // Gold accent border
+  ctx.strokeStyle = '#d4af37';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(40, 40, 460, 230);
+  
+  // Subtle inner shadow
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+  ctx.fillRect(50, 50, 440, 210);
+  
+  // White background for QR code with gold border
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(200, 70, 140, 140);
+  
+  // Gold border around QR
+  ctx.strokeStyle = '#d4af37';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(200, 70, 140, 140);
+
+
         
         // Draw the QR code
         if (qrCanvasRef.current && qrCanvasRef.current.width > 0) {
@@ -225,13 +257,20 @@ const BusinessCard = () => {
         }
         
         // Address section
+        ctx.fillStyle = '#BFDBFE';
+        ctx.font = '11px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Scan to leave us a review!', 270, 260);
+        
+        // NEW CODE:
+        // Address section
         if (selectedFields.address) {
-          ctx.fillStyle = '#FBC2EB';
+          ctx.fillStyle = '#d4af37'; // Gold
           ctx.font = 'bold 14px Arial';
           ctx.textAlign = 'center';
           ctx.fillText('📍 Visit Us', 270, 230);
           
-          ctx.fillStyle = '#BFDBFE';
+          ctx.fillStyle = '#c0c0c0'; // Silver
           ctx.font = '11px Arial';
           
           const maxWidth = 400;
@@ -254,12 +293,10 @@ const BusinessCard = () => {
           ctx.fillText(line, 270, yPos);
         }
         
-        ctx.fillStyle = '#BFDBFE';
+        ctx.fillStyle = '#c0c0c0'; // Silver
         ctx.font = '11px Arial';
         ctx.textAlign = 'center';
         ctx.fillText('Scan to leave us a review!', 270, 260);
-        
-        ctx.textAlign = 'left';
       }
   
       return canvas.toDataURL(format === 'jpg' ? 'image/jpeg' : 'image/png', 0.95);
@@ -601,71 +638,70 @@ if (loading) {
                   <span>Back Side</span>
                 </button>
               </div>
-
-              <div className="bg-gradient-to-br from-purple-500 via-blue-600 to-blue-700 rounded-lg p-3 sm:p-4 md:p-8">
-                <div
-                  ref={cardRef}
-                  className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl p-3 sm:p-4 md:p-8 mx-auto"
-                  style={{ width: '100%', maxWidth: '540px', minHeight: '200px', aspectRatio: '540/310' }}
-                >
-                  {cardSide === 'front' ? (
-                    <div className="flex flex-col sm:flex-row items-center sm:space-x-4 md:space-x-6 h-full space-y-3 sm:space-y-0">
-                      {selectedFields.logo && (
-                        <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center flex-shrink-0">
-<div className="text-xl sm:text-2xl md:text-4xl">
-  {businessData?.photo ? (
-    <img 
-      src={businessData.photo} 
-      alt="business" 
-      className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 object-contain"
-    />
-  ) : (
-    <span role="img" aria-label="burger">🍔</span>
-  )}
+         
+<div className="bg-gray-900 rounded-lg p-3 sm:p-4 md:p-8">
+  <div
+    ref={cardRef}
+    className="bg-black border-2 border-yellow-600 rounded-xl p-3 sm:p-4 md:p-8 mx-auto shadow-2xl"
+    style={{ width: '100%', maxWidth: '540px', minHeight: '200px', aspectRatio: '540/310' }}
+  >
+    {cardSide === 'front' ? (
+      <div className="flex flex-col sm:flex-row items-center sm:space-x-4 md:space-x-6 h-full space-y-3 sm:space-y-0">
+        {selectedFields.logo && (
+          <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center flex-shrink-0">
+            <div className="text-xl sm:text-2xl md:text-4xl">
+              {businessData?.photo ? (
+                <img 
+                  src={businessData.photo} 
+                  alt="business" 
+                  className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 object-contain rounded-full"
+                />
+              ) : (
+                <span role="img" aria-label="burger">🍔</span>
+              )}
+            </div>
+          </div>
+        )}
+        <div className="text-white flex-1 text-center sm:text-left">
+          {selectedFields.businessName && (
+            <h3 className="text-base sm:text-xl md:text-3xl font-bold mb-1 text-yellow-500">{businessData.businessName}</h3>
+          )}
+          <p className="text-gray-300 text-xs sm:text-xs md:text-sm mb-2 sm:mb-2 md:mb-4">{businessData.tagline}</p>
+          <div className="space-y-0.5 sm:space-y-1 text-xs sm:text-xs md:text-sm">
+            {selectedFields.phoneNumber && (
+              <p className="text-gray-300">📞 {businessData.phoneNumber}</p>
+            )}
+            {selectedFields.email && (
+              <p className="text-gray-300">✉️ {businessData.email}</p>
+            )}
+            {selectedFields.website && (
+              <p className="text-gray-300">🌐 {businessData.website}</p>
+            )}
+          </div>
+        </div>
+      </div>
+    ) : (
+      <div className="flex flex-col items-center justify-center h-full text-white text-center space-y-2 sm:space-y-2 md:space-y-3">
+        <div className="bg-white rounded-lg p-2 sm:p-2 md:p-3 border-2 border-yellow-600">
+          <canvas ref={qrCanvasRef} className="w-24 h-24 sm:w-28 sm:h-28 md:w-auto md:h-auto" />
+        </div>
+        {selectedFields.address && (
+          <>
+            <div className="flex items-center space-x-2 text-yellow-500">
+              <span>📍</span>
+              <span className="font-semibold text-xs sm:text-xs md:text-sm">Visit Us</span>
+            </div>
+            <p className="text-xs text-gray-300 px-2">{businessData.address}</p>
+          </>
+        )}
+        <p className="text-xs text-gray-300">Scan to leave us a review!</p>
+      </div>
+    )}
+  </div>
+  <p className="text-center text-gray-400 text-xs sm:text-xs md:text-sm mt-3 sm:mt-4">
+    Business Card Preview (3.5" x 2")
+  </p>
 </div>
-
-                        </div>
-                      )}
-                      <div className="text-white flex-1 text-center sm:text-left">
-                        {selectedFields.businessName && (
-                          <h3 className="text-base sm:text-xl md:text-3xl font-bold mb-1">{businessData.businessName}</h3>
-                        )}
-                        <p className="text-blue-100 text-xs sm:text-xs md:text-sm mb-2 sm:mb-2 md:mb-4">{businessData.tagline}</p>
-                        <div className="space-y-0.5 sm:space-y-1 text-xs sm:text-xs md:text-sm">
-                          {selectedFields.phoneNumber && (
-                            <p className="text-blue-50">📞 {businessData.phoneNumber}</p>
-                          )}
-                          {selectedFields.email && (
-                            <p className="text-blue-50">✉️ {businessData.email}</p>
-                          )}
-                          {selectedFields.website && (
-                            <p className="text-blue-50">🌐 {businessData.website}</p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col items-center justify-center h-full text-white text-center space-y-2 sm:space-y-2 md:space-y-3">
-                      <div className="bg-white rounded-lg p-2 sm:p-2 md:p-3">
-                        <canvas ref={qrCanvasRef} className="w-24 h-24 sm:w-28 sm:h-28 md:w-auto md:h-auto" />
-                      </div>
-                      {selectedFields.address && (
-                        <>
-                          <div className="flex items-center space-x-2 text-pink-200">
-                            <span>📍</span>
-                            <span className="font-semibold text-xs sm:text-xs md:text-sm">Visit Us</span>
-                          </div>
-                          <p className="text-xs text-blue-100 px-2">{businessData.address}</p>
-                        </>
-                      )}
-                      <p className="text-xs text-blue-200">Scan to leave us a review!</p>
-                    </div>
-                  )}
-                </div>
-                <p className="text-center text-white text-xs sm:text-xs md:text-sm mt-3 sm:mt-4">
-                  Business Card Preview (3.5" x 2")
-                </p>
-              </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 md:gap-4">
                 <button
