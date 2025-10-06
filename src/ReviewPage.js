@@ -30,19 +30,57 @@ const ReviewPage = () => {
     // If rating is 4 or 5, redirect immediately to Google Maps
     if (star >= 4) {
       try {
-        const search = new URLSearchParams(location.search);
-     
         toast.success('Thank you for your review!', { containerId: "reviewPage" });
         
-        setTimeout(() => {
-          if (businessData.businessAddress) {
-            const searchQuery = encodeURIComponent(`${businessData.name} ${businessData.businessAddress}`);
+        // Function to get Place ID from Google Places API
+        const getPlaceId = async () => {
+          const query = businessData.businessAddress 
+            ? `${businessData.name} ${businessData.businessAddress}`
+            : businessData.name;
+          
+          console.log('Searching for:', query);
+          
+          const response = await axios.post(`${BASE_URL}/getplaceId`, { query });
+          
+          if (response.data.success && response.data.place_id) {
+            return response.data.place_id;
+          }
+          return null;
+        };
+
+        
+        const placeId = await getPlaceId();
+        console.log(placeId)
+
+    
+        // Fetch Place ID and redirect
+        setTimeout(async () => {
+          try {
+         
+            if (placeId) {
+              // Redirect to Google Maps with review dialog opened
+              // Using the write a review action
+              window.location.href = `https://search.google.com/local/writereview?placeid=${placeId}`;
+            } else {
+              // Fallback: Open Google Maps search without review popup
+              const searchQuery = businessData.businessAddress 
+                ? encodeURIComponent(`${businessData.name} ${businessData.businessAddress}`)
+                : encodeURIComponent(businessData.name);
+              
+              window.location.href = `https://www.google.com/maps/search/?api=1&query=${searchQuery}`;
+              console.warn('Could not find Place ID, opened search instead');
+            }
+          } catch (error) {
+            // Fallback on error
+            const searchQuery = businessData.businessAddress 
+              ? encodeURIComponent(`${businessData.name} ${businessData.businessAddress}`)
+              : encodeURIComponent(businessData.name);
+            
             window.location.href = `https://www.google.com/maps/search/?api=1&query=${searchQuery}`;
-          } else {
-            const searchQuery = encodeURIComponent(businessData.name);
-            window.location.href = `https://www.google.com/maps/search/?api=1&query=${searchQuery}`;
+            console.error('Error fetching Place ID:', error);
           }
         }, 1500);
+        
       } catch (e) {
         if (e?.response?.data?.error) {
           toast.error(e?.response?.data?.error, { containerId: "reviewPage" });
@@ -50,7 +88,7 @@ const ReviewPage = () => {
           toast.error("Network error please try again", { containerId: "reviewPage" });
         }
       }
-    } else {
+    }else {
       // If rating is less than 4, show the form
       setShowForm(true);
     }
