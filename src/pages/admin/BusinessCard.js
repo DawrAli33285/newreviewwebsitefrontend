@@ -206,33 +206,54 @@ const BusinessCard = () => {
         ctx.font = 'bold 13px Arial';
         ctx.fillText(businessData.businessName || 'Company Name', 40, 230);
         
-        // Address
-        if (selectedFields.address) {
-          ctx.fillStyle = '#6B7280';
-          ctx.font = '11px Arial';
-          ctx.fillText(businessData.address, 40, 245);
+     // Address with text wrapping
+     if (selectedFields.address) {
+      ctx.fillStyle = '#6B7280';
+      ctx.font = '11px Arial';
+      
+      const maxWidth = 240;
+      const words = businessData.address.split(' ');
+      let line = '';
+      let yPos = 245;
+      const lineHeight = 14;
+      
+      for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + ' ';
+        const metrics = ctx.measureText(testLine);
+        
+        if (metrics.width > maxWidth && n > 0) {
+          ctx.fillText(line.trim(), 40, yPos);
+          line = words[n] + ' ';
+          yPos += lineHeight;
+        } else {
+          line = testLine;
         }
+      }
+      ctx.fillText(line.trim(), 40, yPos);
+    }
+    
         
         // Contact details on the right
         let rightX = 300;
         ctx.fillStyle = '#1F2937';
         ctx.font = '11px Arial';
         
-        if (selectedFields.phoneNumber) {
+      
+        if (selectedFields.phoneNumber && businessData?.phoneNumber?.length>0) {
           ctx.fillStyle = '#6B7280';
           ctx.fillText('P', rightX, 230);
           ctx.fillStyle = '#1F2937';
           ctx.fillText(businessData.phoneNumber, rightX + 20, 230);
         }
         
-        if (selectedFields.email) {
+        if (selectedFields.email && businessData?.email?.length>0) {
           ctx.fillStyle = '#6B7280';
           ctx.fillText('E', rightX, 245);
           ctx.fillStyle = '#1F2937';
           ctx.fillText(businessData.email, rightX + 20, 245);
         }
         
-        if (selectedFields.website) {
+        if (selectedFields?.website && businessData?.website?.length>0) {
           ctx.fillStyle = '#6B7280';
           ctx.fillText('W', rightX, 260);
           ctx.fillStyle = '#1F2937';
@@ -826,7 +847,7 @@ if (loading) {
     Business Card Preview (3.5" x 2")
   </p>
 </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 md:gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2 md:gap-4">
                 <button
                   onClick={downloadCardsZIP}
                   className="px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center space-x-2 text-xs sm:text-sm md:text-base"
@@ -841,13 +862,7 @@ if (loading) {
                   <Download size={16} className="sm:w-5 sm:h-5" />
                   <span>Download QR Only</span>
                 </button>
-                <button
-                  onClick={() => alert('Redirect to order page')}
-                  className="px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center space-x-2 text-xs sm:text-sm md:text-base"
-                >
-                  <ShoppingCart size={16} className="sm:w-5 sm:h-5" />
-                  <span>Order Printed ($70)</span>
-                </button>
+              
               </div>
 
               <div className="text-center">
