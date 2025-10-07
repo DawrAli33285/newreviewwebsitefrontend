@@ -5,33 +5,93 @@ export default function App() {
   return (
     <div className="min-h-screen bg-white">
      
-      <section className="bg-gradient-to-br from-blue-50 to-blue-100 pt-20 pb-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              Manage Your Business Reviews Like a Pro
-            </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Create beautiful landing pages, collect customer reviews, and boost your online reputation with our powerful review management platform.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="get-started" className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-lg font-medium flex items-center justify-center gap-2">
-                Get Started Free
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
-              <Link to="pricing" className="px-8 py-3 bg-white text-gray-900 border-2 border-gray-300 rounded-lg hover:border-blue-600 hover:text-blue-600 transition-colors text-lg font-medium">
-                Pricing
-              </Link>
-            </div>
-            <p className="mt-8 text-sm text-gray-500">
-              No credit card required • 30 reviews included • Setup in 2 minutes
-            </p>
-          </div>
-        </div>
-      </section>
+     <section className="bg-gradient-to-br from-blue-50 to-blue-100 pt-20 pb-10">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    {/* Main Text Content */}
+    <div className="text-center mb-12">
+      <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+        Manage Your Business Reviews Like a Pro
+      </h1>
+      <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+        Create beautiful landing pages, collect customer reviews, and boost your online reputation with our powerful review management platform.
+      </p>
+      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/get-started" className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-lg font-medium flex items-center justify-center gap-2 shadow-lg hover:shadow-xl">
+          Get Started Free
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+        <a href="/pricing" className="px-8 py-3 bg-white text-gray-900 border-2 border-gray-300 rounded-lg hover:border-blue-600 hover:text-blue-600 transition-colors text-lg font-medium shadow-md hover:shadow-lg">
+          Pricing
+        </a>
+      </div>
+      <p className="mt-8 text-sm text-gray-500">
+        No credit card required • 30 reviews included • Setup in 2 minutes
+      </p>
+    </div>
 
+    {/* Videos Side by Side */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16 max-w-6xl mx-auto">
+      
+      {/* Video 1 */}
+      <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-3">
+          <h3 className="text-white font-semibold text-sm flex items-center gap-2">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Watch Demo 1
+          </h3>
+        </div>
+        <div className="aspect-video bg-gray-900">
+          <iframe 
+            width="100%" 
+            height="100%" 
+            style={{border: 0}} 
+            scrolling="no" 
+            src="https://go.screenpal.com/player/cT613anDPiT?width=100%&height=100%&ff=1&title=0" 
+            allowFullScreen={true}
+            title="Animation Video 1"
+          />
+        </div>
+        <div className="px-4 py-3 bg-gray-50">
+          <p className="text-xs text-gray-600 text-center">See how easy it is to get started</p>
+        </div>
+      </div>
+
+      {/* Video 2 */}
+      <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
+        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-3">
+          <h3 className="text-white font-semibold text-sm flex items-center gap-2">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Watch Demo 2
+          </h3>
+        </div>
+        <div className="aspect-video bg-gray-900">
+          <iframe 
+            width="100%" 
+            height="100%" 
+            style={{border: 0}} 
+            scrolling="no" 
+            src="https://go.screenpal.com/player/cT613gnDPid?width=100%&height=100%&ff=1&title=0" 
+            allowFullScreen={true}
+            title="Animation Video 2"
+          />
+        </div>
+        <div className="px-4 py-3 bg-gray-50">
+          <p className="text-xs text-gray-600 text-center">Explore powerful features</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
 
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

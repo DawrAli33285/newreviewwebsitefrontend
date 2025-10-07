@@ -141,113 +141,146 @@ const BusinessCard = () => {
       gradient.addColorStop(1, '#0a0a0a');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, 540, 310);
-
-      
   
       if (side === 'front') {
-        ctx.fillStyle = '#000000';
-        ctx.fillRect(40, 40, 460, 230);
+        // White background
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, 540, 310);
         
-        
-        ctx.strokeStyle = '#d4af37';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(40, 40, 460, 230);
-        
-       
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
-        ctx.fillRect(50, 50, 440, 210);
-
-
-        let xOffset = 60;
-        
+        // Logo in top left
         if (selectedFields.logo && businessData.photo) {
           const img = new Image();
           img.crossOrigin = 'anonymous';
           await new Promise((resolve, reject) => {
             img.onload = () => {
-              ctx.save();
-              ctx.beginPath();
-              ctx.arc(100, 155, 40, 0, Math.PI * 2);
-              ctx.closePath();
-              ctx.clip();
-              ctx.fillStyle = '#FFFFFF';
-              ctx.fill();
-              ctx.drawImage(img, 60, 115, 80, 80);
-              ctx.restore();
+              ctx.drawImage(img, 40, 40, 80, 80);
               resolve();
             };
             img.onerror = () => resolve();
             img.src = businessData.photo;
           });
-          xOffset = 170;
         } else if (selectedFields.logo) {
-          ctx.fillStyle = '#FFFFFF';
+          ctx.fillStyle = '#2D3E66';
           ctx.beginPath();
-          ctx.arc(100, 155, 40, 0, Math.PI * 2);
+          ctx.arc(80, 80, 40, 0, Math.PI * 2);
           ctx.fill();
           ctx.font = '32px Arial';
-          ctx.fillText('🍔', 85, 170);
-          xOffset = 170;
+          ctx.fillText('🍔', 65, 95);
         }
         
-        ctx.fillStyle = '#FFFFFF';
-        if (selectedFields.businessName) {
-          ctx.fillStyle = '#d4af37'; // Gold color
-          ctx.font = 'bold 32px Arial';
-          ctx.fillText(businessData.businessName, xOffset, 120);
+        // QR code in top right
+        if (qrCanvasRef.current && qrCanvasRef.current.width > 0) {
+          ctx.drawImage(qrCanvasRef.current, 420, 40, 80, 80);
         }
-
-        ctx.fillStyle = '#BFDBFE';
-        ctx.font = '14px Arial';
-      
-        let yOffset = 175;
-        ctx.fillStyle = '#DBEAFE';
-        ctx.font = '12px Arial';
+        
+        // Tagline under QR
+        ctx.fillStyle = '#9CA3AF';
+        ctx.font = '9px Arial';
+        ctx.textAlign = 'right';
+        ctx.fillText('ONE STOP', 500, 130);
+        ctx.fillText('CREATIVE STUDIOS', 500, 142);
+        
+        // Name
+        ctx.textAlign = 'left';
+        if (selectedFields.businessName) {
+          ctx.fillStyle = '#1F2937';
+          ctx.font = 'bold 28px Arial';
+          ctx.fillText(businessData.businessName.toUpperCase(), 40, 170);
+        }
+        
+        // Subtitle/Title
+        ctx.fillStyle = '#6B7280';
+        ctx.font = '11px Arial';
+        ctx.fillText('CEO and CO-FOUNDER', 40, 190);
+        
+        // Decorative line
+        ctx.strokeStyle = '#E5E7EB';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(40, 205);
+        ctx.lineTo(500, 205);
+        ctx.stroke();
+        
+        // Company name
+        ctx.fillStyle = '#1F2937';
+        ctx.font = 'bold 13px Arial';
+        ctx.fillText(businessData.businessName || 'Company Name', 40, 230);
+        
+        // Address
+        if (selectedFields.address) {
+          ctx.fillStyle = '#6B7280';
+          ctx.font = '11px Arial';
+          ctx.fillText(businessData.address, 40, 245);
+        }
+        
+        // Contact details on the right
+        let rightX = 300;
+        ctx.fillStyle = '#1F2937';
+        ctx.font = '11px Arial';
         
         if (selectedFields.phoneNumber) {
-          ctx.fillText(`📞 ${businessData.phoneNumber}`, xOffset, yOffset);
-          yOffset += 20;
+          ctx.fillStyle = '#6B7280';
+          ctx.fillText('P', rightX, 230);
+          ctx.fillStyle = '#1F2937';
+          ctx.fillText(businessData.phoneNumber, rightX + 20, 230);
         }
-
-      if (selectedFields.email) {
-  ctx.fillText(`✉️ ${businessData.email}`, xOffset, yOffset);
-  yOffset += 20;
-}
-if (selectedFields.website) {
-  ctx.fillText(`🌐 ${businessData.website}`, xOffset, yOffset);
-}
-
+        
+        if (selectedFields.email) {
+          ctx.fillStyle = '#6B7280';
+          ctx.fillText('E', rightX, 245);
+          ctx.fillStyle = '#1F2937';
+          ctx.fillText(businessData.email, rightX + 20, 245);
+        }
+        
+        if (selectedFields.website) {
+          ctx.fillStyle = '#6B7280';
+          ctx.fillText('W', rightX, 260);
+          ctx.fillStyle = '#1F2937';
+          ctx.fillText(businessData.website, rightX + 20, 260);
+        }
+        
+        // Decorative circle elements in bottom right
+        ctx.fillStyle = 'rgba(226, 232, 240, 0.5)';
+        ctx.beginPath();
+        ctx.arc(450, 260, 30, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.fillStyle = 'rgba(226, 232, 240, 0.3)';
+        ctx.beginPath();
+        ctx.arc(490, 250, 40, 0, Math.PI * 2);
+        ctx.fill();
+  
       } else {
-        // Back side
-        // Back side - sleek black design
-  ctx.fillStyle = '#000000';
-  ctx.fillRect(40, 40, 460, 230);
-  
-  // Gold accent border
-  ctx.strokeStyle = '#d4af37';
-  ctx.lineWidth = 2;
-  ctx.strokeRect(40, 40, 460, 230);
-  
-  // Subtle inner shadow
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
-  ctx.fillRect(50, 50, 440, 210);
-  
-  // White background for QR code with gold border
-  ctx.fillStyle = '#FFFFFF';
-  ctx.fillRect(200, 70, 140, 140);
-  
-  // Gold border around QR
-  ctx.strokeStyle = '#d4af37';
-  ctx.lineWidth = 2;
-  ctx.strokeRect(200, 70, 140, 140);
-
-
+        // Back side - clean white design matching front
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, 540, 310);
+        
+        // Decorative circle elements in top left
+        ctx.fillStyle = 'rgba(226, 232, 240, 0.3)';
+        ctx.beginPath();
+        ctx.arc(50, 50, 40, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.fillStyle = 'rgba(226, 232, 240, 0.5)';
+        ctx.beginPath();
+        ctx.arc(90, 60, 30, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Center the QR code
+        const qrSize = 140;
+        const qrX = (540 - qrSize) / 2;
+        const qrY = 60;
+        
+        // Light border around QR code
+        ctx.strokeStyle = '#E5E7EB';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(qrX, qrY, qrSize, qrSize);
         
         // Draw the QR code
         if (qrCanvasRef.current && qrCanvasRef.current.width > 0) {
           console.log('Drawing QR code to card image... Canvas size:', qrCanvasRef.current.width, 'x', qrCanvasRef.current.height);
           try {
-            ctx.drawImage(qrCanvasRef.current, 205, 75, 130, 130);
+            ctx.drawImage(qrCanvasRef.current, qrX + 5, qrY + 5, qrSize - 10, qrSize - 10);
             console.log('QR code drawn successfully!');
           } catch (err) {
             console.error('Error drawing QR code:', err);
@@ -256,27 +289,34 @@ if (selectedFields.website) {
           console.error('QR Canvas not ready - width:', qrCanvasRef.current?.width, 'height:', qrCanvasRef.current?.height);
         }
         
-        // Address section
-        ctx.fillStyle = '#BFDBFE';
-        ctx.font = '11px Arial';
+        // "Scan to review" text
+        ctx.fillStyle = '#1F2937';
+        ctx.font = 'bold 16px Arial';
         ctx.textAlign = 'center';
-        ctx.fillText('Scan to leave us a review!', 270, 260);
+        ctx.fillText('Scan to leave us a review!', 270, 220);
         
-        // NEW CODE:
+        // Decorative line
+        ctx.strokeStyle = '#E5E7EB';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(140, 235);
+        ctx.lineTo(400, 235);
+        ctx.stroke();
+        
         // Address section
         if (selectedFields.address) {
-          ctx.fillStyle = '#d4af37'; // Gold
-          ctx.font = 'bold 14px Arial';
+          ctx.fillStyle = '#1F2937';
+          ctx.font = 'bold 13px Arial';
           ctx.textAlign = 'center';
-          ctx.fillText('📍 Visit Us', 270, 230);
+          ctx.fillText('📍 Visit Us', 270, 255);
           
-          ctx.fillStyle = '#c0c0c0'; // Silver
+          ctx.fillStyle = '#6B7280';
           ctx.font = '11px Arial';
           
           const maxWidth = 400;
           const words = businessData.address.split(' ');
           let line = '';
-          let yPos = 245;
+          let yPos = 272;
           
           for (let n = 0; n < words.length; n++) {
             const testLine = line + words[n] + ' ';
@@ -293,10 +333,16 @@ if (selectedFields.website) {
           ctx.fillText(line, 270, yPos);
         }
         
-        ctx.fillStyle = '#c0c0c0'; // Silver
-        ctx.font = '11px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText('Scan to leave us a review!', 270, 260);
+        // Decorative circle elements in bottom right
+        ctx.fillStyle = 'rgba(226, 232, 240, 0.5)';
+        ctx.beginPath();
+        ctx.arc(450, 260, 30, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.fillStyle = 'rgba(226, 232, 240, 0.3)';
+        ctx.beginPath();
+        ctx.arc(490, 250, 40, 0, Math.PI * 2);
+        ctx.fill();
       }
   
       return canvas.toDataURL(format === 'jpg' ? 'image/jpeg' : 'image/png', 0.95);
@@ -545,13 +591,13 @@ if (loading) {
           <Edit size={20} />
           <span>Edit Business Info</span>
         </Link>
-        <button
+        {/* <button
           onClick={() => alert('Redirect to order page')}
           className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center space-x-2 text-sm sm:text-base"
         >
           <ShoppingCart size={20} />
           <span>Order Printed Cards ($70)</span>
-        </button>
+        </button> */}
       </div>
 
       {showDesigner && (
@@ -639,70 +685,147 @@ if (loading) {
                 </button>
               </div>
          
-<div className="bg-gray-900 rounded-lg p-3 sm:p-4 md:p-8">
+              <div className="bg-gray-50 rounded-lg p-3 sm:p-4 md:p-8">
   <div
     ref={cardRef}
-    className="bg-black border-2 border-yellow-600 rounded-xl p-3 sm:p-4 md:p-8 mx-auto shadow-2xl"
+    className="bg-white rounded-xl mx-auto shadow-2xl overflow-hidden"
     style={{ width: '100%', maxWidth: '540px', minHeight: '200px', aspectRatio: '540/310' }}
   >
     {cardSide === 'front' ? (
-      <div className="flex flex-col sm:flex-row items-center sm:space-x-4 md:space-x-6 h-full space-y-3 sm:space-y-0">
-        {selectedFields.logo && (
-          <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center flex-shrink-0">
-            <div className="text-xl sm:text-2xl md:text-4xl">
+      <div className="p-4 sm:p-6 md:p-8 h-full flex flex-col justify-between relative">
+        {/* Top Section - Logo and QR */}
+        <div className="flex justify-between items-start">
+          {/* Logo */}
+          {selectedFields.logo && (
+            <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 flex-shrink-0">
               {businessData?.photo ? (
                 <img 
                   src={businessData.photo} 
                   alt="business" 
-                  className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 object-contain rounded-full"
+                  className="w-full h-full object-cover rounded-lg"
                 />
               ) : (
-                <span role="img" aria-label="burger">🍔</span>
+                <div className="w-full h-full bg-[#2D3E66] rounded-full flex items-center justify-center">
+                  <span className="text-2xl sm:text-3xl md:text-4xl" role="img" aria-label="burger">🍔</span>
+                </div>
               )}
             </div>
-          </div>
-        )}
-        <div className="text-white flex-1 text-center sm:text-left">
-          {selectedFields.businessName && (
-            <h3 className="text-base sm:text-xl md:text-3xl font-bold mb-1 text-yellow-500">{businessData.businessName}</h3>
           )}
-          <p className="text-gray-300 text-xs sm:text-xs md:text-sm mb-2 sm:mb-2 md:mb-4">{businessData.tagline}</p>
-          <div className="space-y-0.5 sm:space-y-1 text-xs sm:text-xs md:text-sm">
+          
+          {/* QR Code and Tagline */}
+          <div className="flex flex-col items-end">
+            <canvas ref={qrCanvasRef} className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" />
+            <div className="text-right mt-2 text-[#9CA3AF]">
+              <p className="text-[8px] sm:text-[9px] leading-tight">ONE STOP</p>
+              <p className="text-[8px] sm:text-[9px] leading-tight">CREATIVE STUDIOS</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Middle Section - Name and Title */}
+        <div className="flex-1 flex flex-col justify-center">
+          {selectedFields.businessName && (
+            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-[#1F2937] mb-1 uppercase tracking-wide">
+              {businessData.businessName}
+            </h3>
+          )}
+          <p className="text-[10px] sm:text-xs text-[#6B7280] mb-3 sm:mb-4">CEO and CO-FOUNDER</p>
+          
+          {/* Decorative Line */}
+          <div className="h-px bg-[#E5E7EB] mb-3 sm:mb-4"></div>
+        </div>
+
+        {/* Bottom Section - Company Info */}
+        <div className="flex justify-between items-end">
+          <div>
+            <h4 className="text-xs sm:text-sm font-bold text-[#1F2937] mb-1">
+              {businessData.businessName || 'Company Name'}
+            </h4>
+            {selectedFields.address && (
+              <p className="text-[9px] sm:text-[10px] text-[#6B7280] leading-tight max-w-[200px]">
+                {businessData.address}
+              </p>
+            )}
+          </div>
+          
+          <div className="text-right space-y-1">
             {selectedFields.phoneNumber && (
-              <p className="text-gray-300">📞 {businessData.phoneNumber}</p>
+              <div className="flex items-center justify-end space-x-2 text-[9px] sm:text-[10px]">
+                <span className="text-[#6B7280] font-medium">P</span>
+                <span className="text-[#1F2937]">{businessData.phoneNumber}</span>
+              </div>
             )}
             {selectedFields.email && (
-              <p className="text-gray-300">✉️ {businessData.email}</p>
+              <div className="flex items-center justify-end space-x-2 text-[9px] sm:text-[10px]">
+                <span className="text-[#6B7280] font-medium">E</span>
+                <span className="text-[#1F2937]">{businessData.email}</span>
+              </div>
             )}
             {selectedFields.website && (
-              <p className="text-gray-300">🌐 {businessData.website}</p>
+              <div className="flex items-center justify-end space-x-2 text-[9px] sm:text-[10px]">
+                <span className="text-[#6B7280] font-medium">W</span>
+                <span className="text-[#1F2937]">{businessData.website}</span>
+              </div>
             )}
+          </div>
+        </div>
+
+        {/* Decorative Circles */}
+        <div className="absolute bottom-4 right-4 pointer-events-none">
+          <div className="relative w-16 h-16 sm:w-20 sm:h-20">
+            <div className="absolute bottom-0 right-4 w-8 h-8 sm:w-10 sm:h-10 bg-[#E2E8F0] rounded-full opacity-50"></div>
+            <div className="absolute bottom-2 right-0 w-10 h-10 sm:w-12 sm:h-12 bg-[#E2E8F0] rounded-full opacity-30"></div>
           </div>
         </div>
       </div>
     ) : (
-      <div className="flex flex-col items-center justify-center h-full text-white text-center space-y-2 sm:space-y-2 md:space-y-3">
-        <div className="bg-white rounded-lg p-2 sm:p-2 md:p-3 border-2 border-yellow-600">
-          <canvas ref={qrCanvasRef} className="w-24 h-24 sm:w-28 sm:h-28 md:w-auto md:h-auto" />
+      <div className="p-4 sm:p-6 md:p-8 h-full flex flex-col items-center justify-center text-center space-y-3 sm:space-y-4 relative">
+        {/* Decorative Circles Top Left */}
+        <div className="absolute top-4 left-4 pointer-events-none">
+          <div className="relative w-16 h-16 sm:w-20 sm:h-20">
+            <div className="absolute top-0 left-0 w-10 h-10 sm:w-12 sm:h-12 bg-[#E2E8F0] rounded-full opacity-30"></div>
+            <div className="absolute top-2 left-8 w-8 h-8 sm:w-10 sm:h-10 bg-[#E2E8F0] rounded-full opacity-50"></div>
+          </div>
         </div>
+
+        {/* QR Code */}
+        <div className="border-2 border-[#E5E7EB] rounded-lg p-2 bg-white">
+          <canvas ref={qrCanvasRef} className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32" />
+        </div>
+        
+        {/* Scan Text */}
+        <p className="text-sm sm:text-base font-bold text-[#1F2937]">Scan to leave us a review!</p>
+        
+        {/* Decorative Line */}
+        <div className="h-px bg-[#E5E7EB] w-48 sm:w-64"></div>
+        
+        {/* Address Section */}
         {selectedFields.address && (
-          <>
-            <div className="flex items-center space-x-2 text-yellow-500">
+          <div className="space-y-1">
+            <div className="flex items-center justify-center space-x-1 text-[#1F2937]">
               <span>📍</span>
-              <span className="font-semibold text-xs sm:text-xs md:text-sm">Visit Us</span>
+              <span className="font-bold text-xs sm:text-sm">Visit Us</span>
             </div>
-            <p className="text-xs text-gray-300 px-2">{businessData.address}</p>
-          </>
+            <p className="text-[10px] sm:text-xs text-[#6B7280] px-4 max-w-xs leading-relaxed">
+              {businessData.address}
+            </p>
+          </div>
         )}
-        <p className="text-xs text-gray-300">Scan to leave us a review!</p>
+
+        {/* Decorative Circles Bottom Right */}
+        <div className="absolute bottom-4 right-4 pointer-events-none">
+          <div className="relative w-16 h-16 sm:w-20 sm:h-20">
+            <div className="absolute bottom-0 right-4 w-8 h-8 sm:w-10 sm:h-10 bg-[#E2E8F0] rounded-full opacity-50"></div>
+            <div className="absolute bottom-2 right-0 w-10 h-10 sm:w-12 sm:h-12 bg-[#E2E8F0] rounded-full opacity-30"></div>
+          </div>
+        </div>
       </div>
     )}
   </div>
-  <p className="text-center text-gray-400 text-xs sm:text-xs md:text-sm mt-3 sm:mt-4">
+  <p className="text-center text-gray-500 text-xs sm:text-xs md:text-sm mt-3 sm:mt-4">
     Business Card Preview (3.5" x 2")
   </p>
 </div>
-
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 md:gap-4">
                 <button
                   onClick={downloadCardsZIP}

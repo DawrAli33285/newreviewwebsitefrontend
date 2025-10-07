@@ -32,7 +32,11 @@ import Middleware from './Middleware';
 import ResetPassword from './Resetpassword';
 
 
-const stripePromise = loadStripe('pk_test_51OwuO4LcfLzcwwOYdssgGfUSfOgWT1LwO6ewi3CEPewY7WEL9ATqH6WJm3oAcLDA3IgUvVYLVEBMIEu0d8fUwhlw009JwzEYmV');
+// const stripePromise = loadStripe('pk_test_51OwuO4LcfLzcwwOYdssgGfUSfOgWT1LwO6ewi3CEPewY7WEL9ATqH6WJm3oAcLDA3IgUvVYLVEBMIEu0d8fUwhlw009JwzEYmV');
+const stripePromise = loadStripe('pk_live_51Ns5fCBkmEEICXZiy6ZwvN46z07z0ShtTF7rFqMIG5Jmv87UF8vuhzDZdApeEwV76cD6MzJkZLRFehVVLaa9AKlH00ilY6rQ1a');
+
+
+
 
 const router = createBrowserRouter([
   {

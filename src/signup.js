@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, ArrowLeft, CheckCircle, Sparkles } from 'lucide-react';
+import { ArrowRight, ArrowLeft, CheckCircle, Sparkles, X, Play } from 'lucide-react';
 import { BASE_URL, FRONTEND_URL } from './baseurl';
 import axios from 'axios'
 import { Copy, Check } from 'lucide-react';
@@ -8,6 +8,7 @@ import {useNavigate} from 'react-router-dom'
 
 export default function GetStarted() {
   const [currentStep, setCurrentStep] = useState(1);
+  const [showVideoModal, setShowVideoModal] = useState(false);
   const [user,setUser]=useState({
     userName:'',
     password:''
@@ -17,8 +18,9 @@ export default function GetStarted() {
     businessAddress: '',
   });
   const [errors, setErrors] = useState({});
-const navigate=useNavigate()
-  const   handleInputChange = (e) => {
+  const navigate=useNavigate()
+  
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     if (errors[name]) {
@@ -51,30 +53,30 @@ const navigate=useNavigate()
     }
   };
 
-const registerBusiness=async()=>{
-  try{
-let response=await axios.post(`${BASE_URL}/createBusiness`,formData)
-localStorage.setItem("token",response.data.token)
-localStorage.setItem("user",JSON.stringify(response.data.user))
-setUser({
-  userName:response.data.user.userName,
-  password:response.data.user.password
-})
-console.log("RESPONSE")
-console.log(response.data)
-toast.dismiss();
-toast.success(response.data.message,{containerId:"signUp"})
-return true
-  }catch(e){
-    toast.dismiss();
-if(e?.response?.data?.error){
-  toast.error(e?.response?.data?.error,{containerId:"signUp"})
-}else{
-  toast.error("Error occured while creating account, please try again",{containerId:"signUp"})
-}
-return false
+  const registerBusiness=async()=>{
+    try{
+      let response=await axios.post(`${BASE_URL}/createBusiness`,formData)
+      localStorage.setItem("token",response.data.token)
+      localStorage.setItem("user",JSON.stringify(response.data.user))
+      setUser({
+        userName:response.data.user.userName,
+        password:response.data.user.password
+      })
+      console.log("RESPONSE")
+      console.log(response.data)
+      toast.dismiss();
+      toast.success(response.data.message,{containerId:"signUp"})
+      return true
+    }catch(e){
+      toast.dismiss();
+      if(e?.response?.data?.error){
+        toast.error(e?.response?.data?.error,{containerId:"signUp"})
+      }else{
+        toast.error("Error occured while creating account, please try again",{containerId:"signUp"})
+      }
+      return false
+    }
   }
-}
 
   const handleBack = () => {
     if (currentStep > 1) {
@@ -87,6 +89,7 @@ return false
     { number: 2, label: 'Preview' },
     { number: 3, label: 'Complete' }
   ];
+  
   const [copiedField, setCopiedField] = useState(null);
 
   const copyToClipboard = (text, field) => {
@@ -98,15 +101,65 @@ return false
     });
   };
 
-
   return (
    <>
-   
-   
-   <ToastContainer containerId={"signUp"}/>
+    <ToastContainer containerId={"signUp"}/>
 
+    {/* Video Tutorial Modal */}
+    {showVideoModal && (
+      <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4 animate-fade-in">
+        <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden">
+          {/* Modal Header */}
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                <Play className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-white">Tutorial Video</h3>
+                <p className="text-blue-100 text-sm">Learn how to get started in minutes</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowVideoModal(false)}
+              className="text-white hover:bg-white hover:bg-opacity-20 p-2 rounded-lg transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
 
-   <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 py-12 px-4">
+          {/* Video Container */}
+          <div className="bg-gray-900 aspect-video relative">
+            <video
+              className="w-full h-full"
+              controls
+              autoPlay
+              controlsList="nodownload"
+            >
+              <source src="/tutorial.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
+          {/* Modal Footer */}
+          <div className="bg-gray-50 px-6 py-4">
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-gray-600">
+                💡 <span className="font-medium">Pro tip:</span> You can pause and rewatch anytime
+              </p>
+              <button
+                onClick={() => setShowVideoModal(false)}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+              >
+                Got it!
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 py-12 px-4">
       <div className="max-w-4xl mx-auto">
       
         <div className="text-center mb-12">
@@ -143,7 +196,6 @@ return false
           </div>
         </div>
 
-     
         <div className="max-w-2xl mx-auto">
          
           {currentStep === 1 && (
@@ -156,8 +208,12 @@ return false
                     </div>
                     <span className="text-blue-900 font-semibold">Need help?</span>
                   </div>
-                  <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors">
-                    <span>Watch</span>
+                  <button 
+                    onClick={() => setShowVideoModal(true)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors shadow-md hover:shadow-lg"
+                  >
+                    <Play className="w-4 h-4" />
+                    <span>Watch Tutorial</span>
                   </button>
                 </div>
               </div>
@@ -215,7 +271,6 @@ return false
             </div>
           )}
 
-
           {currentStep === 2 && (
             <div className="animate-fade-in">
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-4 mb-6">
@@ -226,8 +281,12 @@ return false
                     </div>
                     <span className="text-blue-900 font-semibold">Need help?</span>
                   </div>
-                  <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors">
-                    <span>Watch</span>
+                  <button 
+                    onClick={() => setShowVideoModal(true)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors shadow-md hover:shadow-lg"
+                  >
+                    <Play className="w-4 h-4" />
+                    <span>Watch Tutorial</span>
                   </button>
                 </div>
               </div>
@@ -268,7 +327,6 @@ return false
             </div>
           )}
 
-      
           {currentStep === 3 && (
             <div className="animate-fade-in">
               <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
@@ -282,69 +340,65 @@ return false
                 <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-6 mb-8">
                   <h3 className="text-lg font-semibold text-gray-800 mb-3">What's Next?</h3>
                   <div className="text-left space-y-3">
-      {/* Credentials Box */}
-      <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 mb-4">
-        <h3 className="font-semibold text-blue-900 mb-3 text-lg">Your Login Credentials</h3>
-        
-        <div className="space-y-3">
-          {/* Username */}
-          <div className="bg-white rounded-md p-3 flex items-center justify-between">
-            <div className="flex-1">
-              <p className="text-sm text-gray-600 font-medium">Username</p>
-              <p className="text-gray-900 font-mono font-semibold">{user.userName}</p>
-            </div>
-            <button
-              onClick={() => copyToClipboard(user.userName, 'username')}
-              className="ml-2 p-2 hover:bg-gray-100 rounded-md transition-colors"
-              title="Copy username"
-            >
-              {copiedField === 'username' ? (
-                <Check className="w-5 h-5 text-green-600" />
-              ) : (
-                <Copy className="w-5 h-5 text-gray-600" />
-              )}
-            </button>
-          </div>
+                    <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 mb-4">
+                      <h3 className="font-semibold text-blue-900 mb-3 text-lg">Your Login Credentials</h3>
+                      
+                      <div className="space-y-3">
+                        <div className="bg-white rounded-md p-3 flex items-center justify-between">
+                          <div className="flex-1">
+                            <p className="text-sm text-gray-600 font-medium">Username</p>
+                            <p className="text-gray-900 font-mono font-semibold">{user.userName}</p>
+                          </div>
+                          <button
+                            onClick={() => copyToClipboard(user.userName, 'username')}
+                            className="ml-2 p-2 hover:bg-gray-100 rounded-md transition-colors"
+                            title="Copy username"
+                          >
+                            {copiedField === 'username' ? (
+                              <Check className="w-5 h-5 text-green-600" />
+                            ) : (
+                              <Copy className="w-5 h-5 text-gray-600" />
+                            )}
+                          </button>
+                        </div>
 
-          {/* Password */}
-          <div className="bg-white rounded-md p-3 flex items-center justify-between">
-            <div className="flex-1">
-              <p className="text-sm text-gray-600 font-medium">Password</p>
-              <p className="text-gray-900 font-mono font-semibold">{user.password}</p>
-            </div>
-            <button
-              onClick={() => copyToClipboard(user.password, 'password')}
-              className="ml-2 p-2 hover:bg-gray-100 rounded-md transition-colors"
-              title="Copy password"
-            >
-              {copiedField === 'password' ? (
-                <Check className="w-5 h-5 text-green-600" />
-              ) : (
-                <Copy className="w-5 h-5 text-gray-600" />
-              )}
-            </button>
-          </div>
-        </div>
-      </div>
+                        <div className="bg-white rounded-md p-3 flex items-center justify-between">
+                          <div className="flex-1">
+                            <p className="text-sm text-gray-600 font-medium">Password</p>
+                            <p className="text-gray-900 font-mono font-semibold">{user.password}</p>
+                          </div>
+                          <button
+                            onClick={() => copyToClipboard(user.password, 'password')}
+                            className="ml-2 p-2 hover:bg-gray-100 rounded-md transition-colors"
+                            title="Copy password"
+                          >
+                            {copiedField === 'password' ? (
+                              <Check className="w-5 h-5 text-green-600" />
+                            ) : (
+                              <Copy className="w-5 h-5 text-gray-600" />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
 
-      {/* Feature List */}
-      <div className="flex items-start space-x-3">
-        <span className="text-green-600 text-lg">✓</span>
-        <p className="text-gray-700">Access your personalized dashboard</p>
-      </div>
-      <div className="flex items-start space-x-3">
-        <span className="text-green-600 text-lg">✓</span>
-        <p className="text-gray-700">Customize your landing page design</p>
-      </div>
-      <div className="flex items-start space-x-3">
-        <span className="text-green-600 text-lg">✓</span>
-        <p className="text-gray-700">Generate QR codes for business cards</p>
-      </div>
-      <div className="flex items-start space-x-3">
-        <span className="text-green-600 text-lg">✓</span>
-        <p className="text-gray-700">Start collecting customer reviews</p>
-      </div>
-    </div>
+                    <div className="flex items-start space-x-3">
+                      <span className="text-green-600 text-lg">✓</span>
+                      <p className="text-gray-700">Access your personalized dashboard</p>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <span className="text-green-600 text-lg">✓</span>
+                      <p className="text-gray-700">Customize your landing page design</p>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <span className="text-green-600 text-lg">✓</span>
+                      <p className="text-gray-700">Generate QR codes for business cards</p>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <span className="text-green-600 text-lg">✓</span>
+                      <p className="text-gray-700">Start collecting customer reviews</p>
+                    </div>
+                  </div>
                 </div>
 
                 <button onClick={()=>{
@@ -356,7 +410,6 @@ return false
             </div>
           )}
 
-    
           <div className="flex justify-center items-center gap-6 mt-12">
             <button
               onClick={handleBack}

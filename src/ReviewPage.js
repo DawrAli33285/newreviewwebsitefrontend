@@ -108,13 +108,26 @@ const ReviewPage = () => {
       const search = new URLSearchParams(location.search);
       let source = search.get('source') || 'qrcode';
       
-      const data = {
+      let data = {
         ...formData,
         rating,
         business: businessData._id,
         source
       };
       
+      if(formData.name.length==0){
+data={
+  ...data,
+  name:'anonymous'
+}
+      }
+      if(formData.email.length==0){
+        data={
+          ...data,
+          email:'anonymous@gmail.com'
+        }
+      }
+    
       await axios.post(`${BASE_URL}/createReview`, data);
       
       setFormData({
@@ -302,7 +315,7 @@ window.close();
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    required
+                    
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
                     placeholder="Your name"
                   />
@@ -318,7 +331,7 @@ window.close();
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    required
+                    
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
                     placeholder="your.email@example.com"
                   />
