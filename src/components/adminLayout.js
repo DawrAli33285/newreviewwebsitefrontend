@@ -41,11 +41,10 @@ setUser(user)
 
       <div className="p-6 border-b border-slate-800">
         <Link to="/" className="flex items-center space-x-3" onClick={closeMobileMenu}>
-          <div className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-xl">D</span>
-          </div>
+        
           <div>
-            <div className="text-lg font-bold">DrikReviews</div>
+          <img src="https://res.cloudinary.com/dbjwbveqn/image/upload/v1759940482/ChatGPT_Image_Oct_8_2025_09_18_16_AM_efsuhe.png" class="w-16 h-auto object-contain" />
+
             <div className="text-xs text-gray-400">Business Dashboard</div>
           </div>
         </Link>

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 import { BASE_URL } from './baseurl';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Pricing() {
   const [plans, setPlans] = React.useState([]);
@@ -19,7 +19,7 @@ export default function Pricing() {
 
   const premiumFeatures = [
     'Everything in Free',
-    'Unlimited Reviews'
+  
   ];
 
   const faqs = [
@@ -142,6 +142,20 @@ export default function Pricing() {
                             <span className="text-gray-700">{feature}</span>
                           </li>
                         ))}
+
+{plan?.unlimited==true?<li className="flex items-center space-x-3 py-2">
+                            <svg className="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span className="text-gray-700">Unlimited Reviews</span>
+                          </li>:<li className="flex items-center space-x-3 py-2">
+                            <svg className="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span className="text-gray-700">{plan?.reviewsAllowed?.toString()} Reviews per month</span>
+                          </li>}
+
+
                         {plan.unlimited && (
                           <li className="flex items-center space-x-3 py-2">
                             <svg className="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -160,29 +174,7 @@ export default function Pricing() {
         </div>
       </section>
 
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900">
-              Frequently Asked Questions
-            </h2>
-          </div>
-
-          <div className="space-y-6">
-            {faqs.map((faq, index) => (
-              <div key={index} className="bg-white border border-gray-200 rounded-lg p-6">
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                  {faq.question}
-                </h4>
-                <p className="text-gray-600">
-                  {faq.answer}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+ 
       <section className="py-20 bg-blue-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold text-white mb-6">
@@ -192,12 +184,16 @@ export default function Pricing() {
             Join thousands of businesses already using our platform to improve their online reputation.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="h-12 px-8 bg-white text-blue-600 rounded-lg hover:bg-gray-100 transition-colors font-medium">
+          <Link to='/admin'>
+          <button className="h-12 px-8 bg-white text-blue-600 rounded-lg hover:bg-gray-100 transition-colors font-medium">
               Get Started
             </button>
-            <button className="h-12 px-8 bg-transparent text-white border-2 border-white rounded-lg hover:bg-white hover:text-blue-600 transition-colors font-medium">
+          </Link>
+           <Link to='/contact'>
+           <button className="h-12 px-8 bg-transparent text-white border-2 border-white rounded-lg hover:bg-white hover:text-blue-600 transition-colors font-medium">
               Contact Sales
             </button>
+           </Link>
           </div>
         </div>
       </section>

@@ -35,10 +35,9 @@ export default function Layout() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         <Link to="/" className="flex items-center space-x-2">
-                            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                                <span className="text-white font-bold text-xl">D</span>
-                            </div>
-                            <span className="text-xl font-bold text-gray-900">DrikReviews</span>
+                           
+                            <img src="https://res.cloudinary.com/dbjwbveqn/image/upload/v1759940482/ChatGPT_Image_Oct_8_2025_09_18_16_AM_efsuhe.png" class="w-16 h-auto object-contain" />
+
                         </Link>
                         
                         <div className="hidden lg:flex lg:space-x-8 lg:items-center">
@@ -106,7 +105,8 @@ export default function Layout() {
                             <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
                                 <span className="text-white font-bold text-xl">D</span>
                             </div>
-                            <span className="text-xl font-bold text-gray-900">DrikReviews</span>
+                            <img src="https://res.cloudinary.com/dbjwbveqn/image/upload/v1759940482/ChatGPT_Image_Oct_8_2025_09_18_16_AM_efsuhe.png" class="w-16 h-auto object-contain" />
+
                         </div>
                         <button 
                             className="p-2 rounded-md text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors"
@@ -175,10 +175,9 @@ export default function Layout() {
 
                         <div className="md:col-span-12 lg:col-span-6">
                             <div className="flex items-center space-x-2 mb-6">
-                                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                                    <span className="text-white font-bold text-xl">D</span>
-                                </div>
-                                <span className="text-xl font-bold text-white">DrikReviews</span>
+                               
+                                <img src="https://res.cloudinary.com/dbjwbveqn/image/upload/v1759940482/ChatGPT_Image_Oct_8_2025_09_18_16_AM_efsuhe.png" class="w-16 h-auto object-contain" />
+
                             </div>
                             <p className="text-gray-300 mb-6">
                                 Transform your business reviews with our smart filtering system. Enhance your online reputation while gathering valuable customer feedback.
@@ -241,9 +240,9 @@ export default function Layout() {
                                 <Link to="/terms" className="text-gray-400 hover:text-blue-400 transition-colors">
                                     Terms of Service
                                 </Link>
-                                <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
-                                    Cookie Policy
-                                </a>
+                                <Link to="/cookie" className="text-gray-400 hover:text-blue-400 transition-colors">
+                                   Cookie Policy
+                                </Link>
                             </div>
                         </div>
                     </div>

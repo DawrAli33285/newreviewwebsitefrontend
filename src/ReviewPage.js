@@ -30,8 +30,16 @@ const ReviewPage = () => {
     // If rating is 4 or 5, redirect immediately to Google Maps
     if (star >= 4) {
       try {
-        toast.success('Thank you for your review!', { containerId: "reviewPage" });
-        
+     
+      let data = {
+        ...formData,
+        rating,
+        business: businessData._id,
+     
+      };
+    await axios.post(`${BASE_URL}/createfiveStarReview`,data)
+    toast.success('Thank you for your review!', { containerId: "reviewPage" });
+          
         // Function to get Place ID from Google Places API
         const getPlaceId = async () => {
           const query = businessData.businessAddress 

@@ -3,7 +3,7 @@ import { CardElement, CardNumberElement, CardExpiryElement, CardCvcElement, useS
 import { toast, ToastContainer } from 'react-toastify';
 import axios from 'axios';
 import { BASE_URL } from './baseurl';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Subscription() {
   const stripe = useStripe();
@@ -25,6 +25,8 @@ export default function Subscription() {
   useEffect(() => {
     fetchPlans();
   }, []);
+
+  const navigate=useNavigate();
 
   const fetchPlans = async () => {
     try {
@@ -104,6 +106,9 @@ export default function Subscription() {
         elements.getElement(CardNumberElement).clear();
         elements.getElement(CardExpiryElement).clear();
         elements.getElement(CardCvcElement).clear();
+        setTimeout(()=>{
+navigate('/admin')
+        },1500)
       } else {
         toast.error('Subscription failed. Please try again.', {containerId:"subscriptionPage"});
       }

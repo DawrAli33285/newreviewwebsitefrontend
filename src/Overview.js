@@ -210,24 +210,47 @@ const Overview = () => {
             <div className="flex items-center justify-between text-sm">
               <span className="text-gray-600">Reviews Used This Month</span>
               <span className="font-semibold text-gray-900">
-                {overviewData?.thisMonthReviews[0]?.reviewsThisMonth?.toString() ? overviewData?.thisMonthReviews[0]?.reviewsThisMonth?.toString() : '0'} / 30
+                {overviewData?.thisMonthReviews[0]?.reviewsThisMonth?.toString() ? overviewData?.thisMonthReviews[0]?.reviewsThisMonth?.toString() : '0'} / {overviewData?.user?.
+subscription?.planId?.reviewsAllowed?overviewData?.user?.
+reviewsUser+overviewData?.thisMonthReviews[0]?.reviewsThisMonth:'30'}
               </span>
             </div>
 
             <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-              <div
-                className="bg-blue-600 h-full rounded-full transition-all duration-300"
-                style={{ width: `${Math.min((overviewData?.thisMonthReviews[0]?.reviewsThisMonth || 0) / 30 * 100, 100)}%` }}
-              ></div>
+            <div
+  className="bg-blue-600 h-full rounded-full transition-all duration-300"
+  style={{
+    width: `${Math.min(
+      (
+        (
+          (overviewData?.user?.subscription?.planId?.reviewsAllowed
+            ? (overviewData?.user?.reviewsUser || 0) +
+              (overviewData?.thisMonthReviews?.[0]?.reviewsThisMonth || 0)
+            : overviewData?.thisMonthReviews?.[0]?.reviewsThisMonth || 0)
+        ) / 30
+      ) * 100,
+      100
+    )}%`,
+  }}
+></div>
+
             </div>
 
             <div className="text-right text-sm text-gray-500">
-              {Math.round((overviewData?.thisMonthReviews[0]?.reviewsThisMonth || 0) / 30 * 100)}%
-            </div>
+  {Math.min(
+    Math.round(
+      ((overviewData?.thisMonthReviews?.[0]?.reviewsThisMonth || 0) /
+        (overviewData?.user?.subscription?.planId?.reviewsAllowed || 30)) *
+        100
+    ),
+    100
+  )}%
+</div>
+
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow p-6 sm:p-8 text-center">
+      {overviewData?.user?.subscription?'':  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow p-6 sm:p-8 text-center">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">Unlock Premium Features</h2>
           <p className="text-gray-600 mb-6">
             Get unlimited reviews, advanced analytics, and priority support with our Premium plan.
@@ -238,7 +261,7 @@ const Overview = () => {
           >
             Upgrade to Premium
           </button>
-        </div>
+        </div>}
 
         {showQRModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

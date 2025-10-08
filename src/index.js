@@ -30,10 +30,17 @@ import {
 import Subscription from './subscription';
 import Middleware from './Middleware';
 import ResetPassword from './Resetpassword';
+import TermsOfService from './terms';
+import PrivacyPolicy from './privacy';
+import CookiePolicy from './cookie';
 
 
 // const stripePromise = loadStripe('pk_test_51OwuO4LcfLzcwwOYdssgGfUSfOgWT1LwO6ewi3CEPewY7WEL9ATqH6WJm3oAcLDA3IgUvVYLVEBMIEu0d8fUwhlw009JwzEYmV');
+// const stripePromise = loadStripe('pk_live_51Ns5fCBkmEEICXZiy6ZwvN46z07z0ShtTF7rFqMIG5Jmv87UF8vuhzDZdApeEwV76cD6MzJkZLRFehVVLaa9AKlH00ilY6rQ1a');
+
 const stripePromise = loadStripe('pk_live_51Ns5fCBkmEEICXZiy6ZwvN46z07z0ShtTF7rFqMIG5Jmv87UF8vuhzDZdApeEwV76cD6MzJkZLRFehVVLaa9AKlH00ilY6rQ1a');
+
+
 
 
 
@@ -54,7 +61,10 @@ const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "get-started", element: <GetStarted /> },
       {path:'subscription',element:<Subscription/>},
-      {path:'/forgot-password',element:<ResetPassword/>}
+      {path:'/forgot-password',element:<ResetPassword/>},
+      {path:'/terms',element:<TermsOfService/>},
+      {path:'/privacy',element:<PrivacyPolicy/>},
+      {path:'/cookie',element:<CookiePolicy/>}
     ]
   },
   {
