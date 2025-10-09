@@ -68,7 +68,7 @@ if(e?.response?.data?.error){
       ));
       setSelectedReviews([]);
     } else if (action === 'delete') {
-      console.log(selectedReviews)
+   
       if (window.confirm(`Are you sure you want to delete ${selectedReviews.length} review(s)?`)) {
       try{
  let response=await axios.post(`${BASE_URL}/bulkdelete`,selectedReviews)

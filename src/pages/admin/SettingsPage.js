@@ -61,7 +61,7 @@ const navigate=useNavigate();
         userName:response.data.user.userName
       })
       setLoading(false)
-      console.log(response.data);
+     
     } catch (e) {
       toast.error('Failed to load user data',{containerId:"settingsPage"});
     }
@@ -102,10 +102,7 @@ const navigate=useNavigate();
 
   const exportDataToPDF = () => {
     try {
-      console.log('Starting PDF export...');
-      console.log('User data:', user);
-      console.log('Reviews data:', reviews);
-  
+     
       // Check if jsPDF is available
       if (typeof jsPDF === 'undefined') {
         toast.error('PDF library not loaded. Please refresh the page.',{containerId:"settingsPage"});
@@ -238,7 +235,7 @@ const navigate=useNavigate();
       const fileName = `${user.userName || 'account'}_data_${new Date().toISOString().split('T')[0]}.pdf`;
       doc.save(fileName);
       
-      console.log('PDF exported successfully');
+    
       toast.success('Data exported successfully!',{containerId:"settingsPage"});
     } catch (error) {
       console.error('Export error:', error);

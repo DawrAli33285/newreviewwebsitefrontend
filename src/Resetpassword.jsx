@@ -52,9 +52,9 @@ export default function ResetPassword() {
                 navigate('/login');
             }, 2000);
             
-            console.log(response.data);
+         
         } catch(e) {
-            console.log(e.message)
+            
             toast.dismiss();
             if (e?.response?.data?.error) {
                 toast.error(e?.response?.data?.error, { containerId: "reset" });

@@ -22,7 +22,7 @@ export default function Contact() {
 
     const handleSubmit = async(e) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
+       
         
         if(formData.firstName.length === 0){
             alert("Please enter your first name");

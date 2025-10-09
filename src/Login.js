@@ -23,13 +23,13 @@ export default function Login() {
     const navigate=useNavigate();
     const handleSubmit = async(e) => {
         e.preventDefault();
-        console.log('Login submitted:', formData);
+      
 try{
 let response=await axios.post(`${BASE_URL}/login`,formData)
 localStorage.setItem('token',response.data.token)
 localStorage.setItem('user',JSON.stringify(response.data.user))
 navigate('/admin/overview')
-console.log(response.data)
+
 }catch(e){
     toast.dismiss();
     if(e?.response?.data?.error){

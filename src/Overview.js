@@ -75,7 +75,7 @@ const Overview = () => {
         }
       });
 
-      console.log(response.data);
+     
       setOverviewdata({
         user: response.data.user,
         reviews: response.data.reviews,

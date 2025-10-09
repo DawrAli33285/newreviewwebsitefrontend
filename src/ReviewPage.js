@@ -46,7 +46,7 @@ const ReviewPage = () => {
             ? `${businessData.name} ${businessData.businessAddress}`
             : businessData.name;
           
-          console.log('Searching for:', query);
+       
           
           const response = await axios.post(`${BASE_URL}/getplaceId`, { query });
           
@@ -58,7 +58,7 @@ const ReviewPage = () => {
 
         
         const placeId = await getPlaceId();
-        console.log(placeId)
+      
 
     
         // Fetch Place ID and redirect
@@ -185,7 +185,7 @@ window.close();
         await axios.patch(`${BASE_URL}/updateVisitor/${response.data.business._id}`);
       }
     } catch (e) {
-      console.log(e.message);
+    
       if (e?.response?.data?.error) {
         toast.error(e?.response?.data?.error, { containerId: "reviewPage" });
       } else {

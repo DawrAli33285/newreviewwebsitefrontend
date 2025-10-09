@@ -62,8 +62,7 @@ export default function GetStarted() {
         userName:response.data.user.userName,
         password:response.data.user.password
       })
-      console.log("RESPONSE")
-      console.log(response.data)
+   
       toast.dismiss();
       toast.success(response.data.message,{containerId:"signUp"})
       return true

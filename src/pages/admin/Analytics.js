@@ -35,7 +35,7 @@ const Analytics = () => {
       processAnalytics(reviewsData);
       setLoading(false);
     } catch (e) {
-      console.log(e.message);
+     
       setLoading(false);
     }
   };

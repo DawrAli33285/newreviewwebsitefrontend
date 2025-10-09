@@ -84,9 +84,7 @@ export default function Subscription() {
         return;
       }
   
-      console.log("SELECTEDPLAN")
-      console.log(selectedPlan)
-      
+   
       // Send payment method to your backend
       let token = localStorage.getItem('token')
       const response = await axios.post(`${BASE_URL}/subscribe`, {
@@ -113,7 +111,7 @@ navigate('/admin')
         toast.error('Subscription failed. Please try again.', {containerId:"subscriptionPage"});
       }
     } catch (error) {
-      console.log(error.message)
+     
       // Fixed: Access error.response?.data?.error instead of message
       toast.error(error.response?.data?.error || 'An error occurred', {containerId:"subscriptionPage"});
     } finally {

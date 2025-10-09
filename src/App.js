@@ -180,7 +180,7 @@ export default function App() {
                   Join thousands of businesses that trust us with their review management
                 </p>
                 <Link to="get-started" className="px-8 py-3 bg-white text-blue-600 rounded-lg hover:bg-gray-100 transition-colors font-medium text-lg">
-                  Buy Now
+                 Start Now
                 </Link>
               </div>
             </div>

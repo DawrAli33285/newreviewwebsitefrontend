@@ -110,9 +110,7 @@ const [originalImagePreview,setOriginalImagePreview]=useState("")
 
   const handleSave = async () => {
     try {
-      console.log('Form Data:', formData);
-      console.log('Business Image:', businessImage);
-  
+    
       const newFormData = new FormData();
   
       // append all properties from your state `formData`
@@ -140,10 +138,10 @@ const [originalImagePreview,setOriginalImagePreview]=useState("")
       );
   
       toast.success("Changes saved successfully!",{containerId:"businessInfo"});
-      console.log("Server response:", response.data);
+     
   
     } catch (e) {
-      console.log(e.message)
+  
       if (e?.response?.data?.error) {
         toast.error(e?.response?.data?.error, { containerId: "businessInfo" });
       } else {
@@ -167,7 +165,7 @@ let response=await axios.get(`${BASE_URL}/getBusiness`,{
     Authorization:`Bearer ${token}`
   }
 })
-console.log(response.data)
+
 setFormData({
   businessAddress:response.data.business.businessAddress,
   businessName:response.data.business.businessName,

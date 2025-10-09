@@ -38,7 +38,7 @@ const location=useLocation();
             toast.error("Business id not found",{containerId:"complaintPage"})
             return;
         }
-      console.log('Complaint submitted:', formData);
+     
       let data = {
         ...formData,
         business: businessData._id
@@ -64,8 +64,7 @@ const location=useLocation();
       let params=new URLSearchParams(location.search)
 let business=params.get('businessName')
       let response = await axios.get(`${BASE_URL}/getSpecificBusiness/${business}`);
-      console.log(response.data);
-      console.log(`get SPECIFIC BUSINESS`);
+  
       setBusinessData({
         name: response?.data?.business?.businessName,
         logo:response.data.business.photo,
