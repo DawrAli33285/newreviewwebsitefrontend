@@ -176,8 +176,7 @@ const BusinessCard = () => {
         ctx.fillStyle = '#9CA3AF';
         ctx.font = '9px Arial';
         ctx.textAlign = 'right';
-        ctx.fillText('ONE STOP', 500, 130);
-        ctx.fillText('CREATIVE STUDIOS', 500, 142);
+     
         
         // Name
         ctx.textAlign = 'left';
@@ -190,8 +189,7 @@ const BusinessCard = () => {
         // Subtitle/Title
         ctx.fillStyle = '#6B7280';
         ctx.font = '11px Arial';
-        ctx.fillText('CEO and CO-FOUNDER', 40, 190);
-        
+     
         // Decorative line
         ctx.strokeStyle = '#E5E7EB';
         ctx.lineWidth = 1;
@@ -240,21 +238,21 @@ const BusinessCard = () => {
       
         if (selectedFields.phoneNumber && businessData?.phoneNumber?.length>0) {
           ctx.fillStyle = '#6B7280';
-          ctx.fillText('P', rightX, 230);
+       
           ctx.fillStyle = '#1F2937';
           ctx.fillText(businessData.phoneNumber, rightX + 20, 230);
         }
         
         if (selectedFields.email && businessData?.email?.length>0) {
           ctx.fillStyle = '#6B7280';
-          ctx.fillText('E', rightX, 245);
+         
           ctx.fillStyle = '#1F2937';
           ctx.fillText(businessData.email, rightX + 20, 245);
         }
         
         if (selectedFields?.website && businessData?.website?.length>0) {
           ctx.fillStyle = '#6B7280';
-          ctx.fillText('W', rightX, 260);
+         
           ctx.fillStyle = '#1F2937';
           ctx.fillText(businessData.website, rightX + 20, 260);
         }
@@ -733,10 +731,7 @@ if (loading) {
           {/* QR Code and Tagline */}
           <div className="flex flex-col items-end">
             <canvas ref={qrCanvasRef} className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" />
-            <div className="text-right mt-2 text-[#9CA3AF]">
-              <p className="text-[8px] sm:text-[9px] leading-tight">ONE STOP</p>
-              <p className="text-[8px] sm:text-[9px] leading-tight">CREATIVE STUDIOS</p>
-            </div>
+
           </div>
         </div>
 
@@ -747,8 +742,7 @@ if (loading) {
               {businessData.businessName}
             </h3>
           )}
-          <p className="text-[10px] sm:text-xs text-[#6B7280] mb-3 sm:mb-4">CEO and CO-FOUNDER</p>
-          
+         
           {/* Decorative Line */}
           <div className="h-px bg-[#E5E7EB] mb-3 sm:mb-4"></div>
         </div>
@@ -769,19 +763,19 @@ if (loading) {
           <div className="text-right space-y-1">
             {selectedFields.phoneNumber && (
               <div className="flex items-center justify-end space-x-2 text-[9px] sm:text-[10px]">
-                <span className="text-[#6B7280] font-medium">P</span>
+               
                 <span className="text-[#1F2937]">{businessData.phoneNumber}</span>
               </div>
             )}
             {selectedFields.email && (
               <div className="flex items-center justify-end space-x-2 text-[9px] sm:text-[10px]">
-                <span className="text-[#6B7280] font-medium">E</span>
+               
                 <span className="text-[#1F2937]">{businessData.email}</span>
               </div>
             )}
             {selectedFields.website && (
               <div className="flex items-center justify-end space-x-2 text-[9px] sm:text-[10px]">
-                <span className="text-[#6B7280] font-medium">W</span>
+                
                 <span className="text-[#1F2937]">{businessData.website}</span>
               </div>
             )}
