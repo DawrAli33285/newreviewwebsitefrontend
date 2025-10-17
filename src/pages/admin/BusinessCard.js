@@ -783,12 +783,7 @@ if (loading) {
         </div>
 
         {/* Decorative Circles */}
-        <div className="absolute bottom-4 right-4 pointer-events-none">
-          <div className="relative w-16 h-16 sm:w-20 sm:h-20">
-            <div className="absolute bottom-0 right-4 w-8 h-8 sm:w-10 sm:h-10 bg-[#E2E8F0] rounded-full opacity-50"></div>
-            <div className="absolute bottom-2 right-0 w-10 h-10 sm:w-12 sm:h-12 bg-[#E2E8F0] rounded-full opacity-30"></div>
-          </div>
-        </div>
+       
       </div>
     ) : (
       <div className="p-4 sm:p-6 md:p-8 h-full flex flex-col items-center justify-center text-center space-y-3 sm:space-y-4 relative">
@@ -825,12 +820,7 @@ if (loading) {
         )}
 
         {/* Decorative Circles Bottom Right */}
-        <div className="absolute bottom-4 right-4 pointer-events-none">
-          <div className="relative w-16 h-16 sm:w-20 sm:h-20">
-            <div className="absolute bottom-0 right-4 w-8 h-8 sm:w-10 sm:h-10 bg-[#E2E8F0] rounded-full opacity-50"></div>
-            <div className="absolute bottom-2 right-0 w-10 h-10 sm:w-12 sm:h-12 bg-[#E2E8F0] rounded-full opacity-30"></div>
-          </div>
-        </div>
+      
       </div>
     )}
   </div>
