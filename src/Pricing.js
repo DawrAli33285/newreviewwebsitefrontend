@@ -45,10 +45,11 @@ export default function Pricing() {
     try {
       setLoading(true);
       let response = await  axios.get(`${BASE_URL}/getPlans`)
-     
+     console.log(response.data)
       setPlans(response.data.plans);
       setLoading(false);
     } catch (e) {
+      console.log(e.message)
       toast.error('Failed to load pricing plans');
       setLoading(false);
     }
