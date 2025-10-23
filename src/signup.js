@@ -16,6 +16,7 @@ export default function GetStarted() {
   const [formData, setFormData] = useState({
     businessName: '',
     businessAddress: '',
+    email:''
   });
   const [errors, setErrors] = useState({});
   const navigate=useNavigate()
@@ -35,6 +36,9 @@ export default function GetStarted() {
     }
     if (!formData.businessAddress.trim()) {
       newErrors.businessAddress = 'Please enter your business address';
+    }
+    if(!formData.email.trim()){
+      newErrors.email="Please enter your email"
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -265,6 +269,32 @@ export default function GetStarted() {
                       <p className="text-red-500 text-sm mt-1">{errors.businessAddress}</p>
                     )}
                   </div>
+
+
+
+
+
+
+
+
+                  <div className="mb-6">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Email Address <span className="text-red-500">*</span>
+                    </label>
+                    <textarea
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      rows="3"
+                      placeholder="e.g., johndoe@gmail.com"
+                      className={`w-full px-4 py-3 rounded-xl border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
+                        errors.email ? 'border-red-500' : 'border-gray-200'
+                      }`}
+                    />
+                    {errors.email && (
+                      <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -313,11 +343,7 @@ export default function GetStarted() {
                   </div>
                 </div>
 
-                <div className="bg-gray-50 rounded-xl p-4 mb-4">
-                  <p className="text-sm text-gray-600 mb-2 font-medium">Your landing page URL:</p>
-                  <p className="text-blue-600 text-sm font-mono">{FRONTEND_URL}/restaurant/{formData.businessName.toLowerCase().replace(/\s+/g, '-')}</p>
-                </div>
-
+          
                 <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-4 flex items-start space-x-3">
                   <span className="text-yellow-600 text-xl">💡</span>
                   <p className="text-sm text-gray-700">Create business cards with QR codes from your dashboard to share with customers!</p>
