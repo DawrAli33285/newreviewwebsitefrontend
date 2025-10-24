@@ -16,8 +16,9 @@ export default function GetStarted() {
   const [formData, setFormData] = useState({
     businessName: '',
     businessAddress: '',
-    email:''
+    businessEmail:''
   });
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate=useNavigate()
   
@@ -37,8 +38,11 @@ export default function GetStarted() {
     if (!formData.businessAddress.trim()) {
       newErrors.businessAddress = 'Please enter your business address';
     }
-    if(!formData.email.trim()){
-      newErrors.email="Please enter your email"
+    if(!formData.businessEmail.trim()){
+      newErrors.businessEmail="Please enter your email"
+    }
+    if(!acceptedTerms){
+      newErrors.acceptedTerms="You must accept the terms and conditions"
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -270,29 +274,44 @@ export default function GetStarted() {
                     )}
                   </div>
 
-
-
-
-
-
-
-
                   <div className="mb-6">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Email Address <span className="text-red-500">*</span>
                     </label>
                     <textarea
-                      name="email"
-                      value={formData.email}
+                      name="businessEmail"
+                      value={formData.businessEmail}
                       onChange={handleInputChange}
                       rows="3"
                       placeholder="e.g., johndoe@gmail.com"
                       className={`w-full px-4 py-3 rounded-xl border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                        errors.email ? 'border-red-500' : 'border-gray-200'
+                        errors.businessEmail ? 'border-red-500' : 'border-gray-200'
                       }`}
                     />
-                    {errors.email && (
-                      <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                    {errors.businessEmail && (
+                      <p className="text-red-500 text-sm mt-1">{errors.businessEmail}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-6">
+                    <label className="flex items-start space-x-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={acceptedTerms}
+                        onChange={(e) => {
+                          setAcceptedTerms(e.target.checked);
+                          if (errors.acceptedTerms) {
+                            setErrors(prev => ({ ...prev, acceptedTerms: '' }));
+                          }
+                        }}
+                        className="mt-1 w-5 h-5 rounded border-2 border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                      />
+                      <span className="text-sm text-gray-700">
+                      I agree to receive marketing emails from Da-Marketing in accordance with the Privacy Policy.  
+                      </span>
+                    </label>
+                    {errors.acceptedTerms && (
+                      <p className="text-red-500 text-sm mt-1">{errors.acceptedTerms}</p>
                     )}
                   </div>
                 </div>
