@@ -42,7 +42,7 @@ export default function GetStarted() {
       newErrors.businessEmail="Please enter your email"
     }
     if(!acceptedTerms){
-      newErrors.acceptedTerms="You must accept the terms and conditions"
+      newErrors.acceptedTerms="You must accept the terms and consent to receive communications"
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -278,11 +278,11 @@ export default function GetStarted() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Email Address <span className="text-red-500">*</span>
                     </label>
-                    <textarea
+                    <input
+                      type="email"
                       name="businessEmail"
                       value={formData.businessEmail}
                       onChange={handleInputChange}
-                      rows="3"
                       placeholder="e.g., johndoe@gmail.com"
                       className={`w-full px-4 py-3 rounded-xl border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
                         errors.businessEmail ? 'border-red-500' : 'border-gray-200'
@@ -293,7 +293,26 @@ export default function GetStarted() {
                     )}
                   </div>
 
-                  <div className="mb-6">
+                  {/* GDPR & CAN-SPAM Compliant Consent Section */}
+                  <div className="mb-6 bg-blue-50 border-2 border-blue-200 rounded-xl p-5">
+                    <h3 className="text-sm font-semibold text-gray-800 mb-3">Consent to Receive Communications</h3>
+                    
+                    <div className="text-xs text-gray-700 space-y-2 mb-4">
+                      <p>
+                        By entering your email address and creating an account, you consent to receive emails from <strong>Da-Marketing</strong>, including updates, promotions, and relevant information about our products and services.
+                      </p>
+                      <p>
+                        We respect your privacy. Your personal data will be processed in accordance with our Privacy Policy and will not be shared with third parties without your explicit consent.
+                      </p>
+                      <p>
+                        You can withdraw your consent or update your preferences at any time by clicking the "Unsubscribe" link in any email we send or by contacting us directly at info@predictive-reviews.com
+                      </p>
+                      <p className="text-xs text-gray-600 mt-2">
+                        <strong>Data Controller:</strong> Da-Marketing<br />
+                        <strong>Legal Basis:</strong> Consent (Article 6(1)(a) GDPR)
+                      </p>
+                    </div>
+
                     <label className="flex items-start space-x-3 cursor-pointer">
                       <input
                         type="checkbox"
@@ -304,14 +323,14 @@ export default function GetStarted() {
                             setErrors(prev => ({ ...prev, acceptedTerms: '' }));
                           }
                         }}
-                        className="mt-1 w-5 h-5 rounded border-2 border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                        className="mt-0.5 w-5 h-5 rounded border-2 border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500 flex-shrink-0"
                       />
-                      <span className="text-sm text-gray-700">
-                      I agree to receive marketing emails from Da-Marketing in accordance with the Privacy Policy.  
+                      <span className="text-sm text-gray-800">
+                        I agree to receive marketing emails from Da-Marketing in accordance with the Privacy Policy and <a href="/terms" className="text-blue-600 hover:text-blue-700 font-medium underline">Terms and Conditions</a>. <span className="text-red-500">*</span>
                       </span>
                     </label>
                     {errors.acceptedTerms && (
-                      <p className="text-red-500 text-sm mt-1">{errors.acceptedTerms}</p>
+                      <p className="text-red-500 text-sm mt-2">{errors.acceptedTerms}</p>
                     )}
                   </div>
                 </div>
