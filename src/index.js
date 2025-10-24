@@ -33,6 +33,7 @@ import ResetPassword from './Resetpassword';
 import TermsOfService from './terms';
 import PrivacyPolicy from './privacy';
 import CookiePolicy from './cookie';
+import PrivacyConsentPage from './newtos';
 
 
 // const stripePromise = loadStripe('pk_test_51OwuO4LcfLzcwwOYdssgGfUSfOgWT1LwO6ewi3CEPewY7WEL9ATqH6WJm3oAcLDA3IgUvVYLVEBMIEu0d8fUwhlw009JwzEYmV');
@@ -65,7 +66,8 @@ const router = createBrowserRouter([
       {path:'/forgot-password',element:<ResetPassword/>},
       {path:'/terms',element:<TermsOfService/>},
       {path:'/privacy',element:<PrivacyPolicy/>},
-      {path:'/cookie',element:<CookiePolicy/>}
+      {path:'/cookie',element:<CookiePolicy/>},
+      {path:'/consent', element:<PrivacyConsentPage/>}
     ]
   },
   {
