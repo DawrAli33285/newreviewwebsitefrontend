@@ -9,7 +9,7 @@ const ReviewPage = () => {
   const [rating, setRating] = useState(0);
   const [hoveredStar, setHoveredStar] = useState(0);
   const [showForm, setShowForm] = useState(false);
-  const [oneStarStep, setOneStarStep] = useState(1); // Track steps for 1-star flow
+  const [oneStarStep, setOneStarStep] = useState(1); // Track steps for low-rating flow (≤3 stars)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -29,8 +29,8 @@ const ReviewPage = () => {
   const handleStarClick = async (star) => {
     setRating(star);
     
-    // If rating is 1 star, show step-by-step form
-    if (star === 1) {
+    // If rating is ≤ 3 stars, show step-by-step form
+    if (star <= 3) {
       setShowForm(true);
       setOneStarStep(1); // Start with comment step
       return;
@@ -41,7 +41,7 @@ const ReviewPage = () => {
       try {
         let data = {
           ...formData,
-          rating,
+          rating: star,
           business: businessData._id,
         };
         await axios.post(`${BASE_URL}/createfiveStarReview`, data);
@@ -91,10 +91,6 @@ const ReviewPage = () => {
           toast.error("Network error please try again", { containerId: "reviewPage" });
         }
       }
-    } else {
-      // If rating is 2-3, show the regular form
-      setShowForm(true);
-      setOneStarStep(0); // Regular form, not step-by-step
     }
   };
 
@@ -121,8 +117,8 @@ const ReviewPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // For 1-star, validate comment
-    if (rating === 1 && !formData.description.trim()) {
+    // For ratings ≤ 3, validate comment
+    if (rating <= 3 && !formData.description.trim()) {
       toast.error('Please share your feedback', { containerId: "reviewPage" });
       return;
     }
@@ -280,8 +276,8 @@ const ReviewPage = () => {
                 </p>
               </div>
             </div>
-          ) : rating === 1 ? (
-            // 1-Star Step-by-Step Form
+          ) : rating <= 3 ? (
+            // Step-by-Step Form for ratings ≤ 3
             <div className="text-center space-y-6">
               <div className={`w-24 h-24 rounded-full bg-gradient-to-br ${businessData.logoColor} flex items-center justify-center mx-auto shadow-lg`}>
                 {businessData?.logo && businessData.logo !== 'P' ? (
@@ -450,115 +446,7 @@ const ReviewPage = () => {
                 </p>
               </div>
             </div>
-          ) : (
-            // Regular Form (for 2-3 star ratings)
-            <form onSubmit={handleSubmit} className="text-center space-y-6">
-              <div className={`w-24 h-24 rounded-full bg-gradient-to-br ${businessData.logoColor} flex items-center justify-center mx-auto shadow-lg`}>
-                {businessData?.logo && businessData.logo !== 'P' ? (
-                  <img 
-                    src={businessData.logo} 
-                    alt={businessData.name}
-                    className="w-full h-full rounded-full object-cover"
-                  />
-                ) : (
-                  <span className="text-white text-4xl font-bold">
-                    {businessData?.name?.charAt(0)?.toUpperCase()}
-                  </span>
-                )}
-              </div>
-
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                  {businessData.name}
-                </h1>
-              </div>
-
-              <div>
-                <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                  Tell us more about your experience
-                </h2>
-                <div className="flex justify-center gap-2 mb-4">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <svg
-                      key={star}
-                      className={`w-8 h-8 ${
-                        star <= rating
-                          ? 'fill-yellow-400 text-yellow-400'
-                          : 'fill-gray-300 text-gray-300'
-                      }`}
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="1"
-                    >
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                    </svg>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-4 text-left">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                    placeholder="Your name"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                    placeholder="your.email@example.com"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="comment" className="block text-sm font-medium text-gray-700 mb-1">
-                    Comment
-                  </label>
-                  <textarea
-                    id="comment"
-                    name="description"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                    rows="4"
-                    required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition resize-none"
-                    placeholder="Tell us what went wrong..."
-                  />
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-3 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl"
-              >
-                Submit Review
-              </button>
-
-              <div className="pt-4 border-t border-gray-300">
-                <p className="text-xs text-gray-500">
-                  © 2025 {businessData.name}. All rights reserved.
-                </p>
-              </div>
-            </form>
-          )}
+          ) : null}
         </div>
       </div>
     </>
